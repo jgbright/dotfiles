@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# Setup dotfiles.
+
+set -e
+
+if [ "$(id -u)" -eq 0 ]; then
+    echo "This script should not be run as root." >&2
+    exit 1
+fi
+
+log() {
+    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+    echo "${timestamp}: ${1}"
+}
+
+apt_get_update() {
+    if [ -z "$(ls -A /var/lib/apt/lists)" ]; then
+        if [ "$(command -v sudo)" ]; then
+            log "Updating apt lists with sudo..."
+            sudo apt-get update
+        else
+            log "Updating apt lists without sudo..."
+            apt-get update
+        fi
+
+        log "Updated apt lists."
+    fi
+}
+
+apt_remove_lists() {
+    sudo rm -rf /var/lib/apt/lists/*
+}
+
+cleanup() {
+    log "Cleaning up..."
+    apt_remove_lists
+    log "Cleaned up."
+}
+
+install_sudo() {
+    if command -v sudo &>/dev/null; then
+        log "Sudo already installed."
+    else
+        log "Installing sudo..."
+
+        apt_get_update
+        apt-get install -y sudo
+        apt_remove_lists
+
+        log "Installed sudo."
+    fi
+}
+
+install_git() {
+    if command -v git &>/dev/null; then
+        log "Git already installed."
+    else
+        log "Installing git..."
+
+        apt_get_update
+        sudo apt-get install -y git-all
+
+        log "Installed git."
+    fi
+}
+
+main() {
+    log "Installing dotbot prerequisites..."
+
+    install_sudo
+    install_git
+
+    cleanup
+
+    log "Installed dotbot prerequisites."
+}
+
+main
