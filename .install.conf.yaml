@@ -1,3 +1,18 @@
-- clean: []
-- link: {}
-- shell: []
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.bash:
+    ~/.bash_logout:
+    ~/.bashrc:
+    ~/.profile:
+    ~/.shell:
+    ~/.local/bin: bin
+
+- shell:
+    - git submodule sync --recursive
