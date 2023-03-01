@@ -122,9 +122,8 @@ source ~/.shell/aliases.sh
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
 # Fuzzy finder
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Oh my posh
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-    eval "$(oh-my-posh init zsh --config $HOME/.poshthemes/kushal.omp.json)"
+    eval "$(oh-my-posh init zsh --config "$HOME/.poshthemes/kushal.omp.json")"
 fi

@@ -171,7 +171,6 @@ fi
 . "$HOME/.cargo/env"
 
 # fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Oh my posh
-eval "$(oh-my-posh init zsh --config "$HOME/.poshthemes/kushal.omp.json")"
+eval "$(oh-my-posh init bash --config "$HOME/.poshthemes/kushal.omp.json")"
