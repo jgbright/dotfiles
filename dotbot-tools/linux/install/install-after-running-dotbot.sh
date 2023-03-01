@@ -307,6 +307,7 @@ main() {
     install_zsh_plugin https://github.com/zsh-users/zsh-syntax-highlighting
     install_zsh_plugin https://github.com/agkozak/zsh-z
     install_zsh_plugin https://github.com/ptavares/zsh-exa
+    install_zsh_plugin https://github.com/unixorn/fzf-zsh-plugin
 
     cleanup
 
