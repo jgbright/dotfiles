@@ -55,13 +55,6 @@ apt_install() {
     fi
 }
 
-upgrade_all() {
-    winget upgrade \
-        --all \
-        --accept-source-agreements \
-        --accept-package-agreements
-}
-
 install_ohmyzsh() {
     if [ -d "${HOME}/.oh-my-zsh" ]; then
         log "Oh My Zsh already installed."
@@ -292,8 +285,6 @@ install_rustup() {
 
 main() {
     log "Installing apps..."
-
-    upgrade_all
 
     apt_install unzip
     apt_install zsh

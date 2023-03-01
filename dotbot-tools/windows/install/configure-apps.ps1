@@ -8,6 +8,13 @@ Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
 Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
 Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 
+function Upgrade-All {
+    winget upgrade `
+        --all `
+        --accept-source-agreements `
+        --accept-package-agreements
+}
+
 function  Configure-Path {
     # Add ~/.local/bin to path if it's not already there.
     $BinDir = "$env:USERPROFILE\.local\bin"
@@ -240,6 +247,8 @@ function Disable-TaskBarTaskView {
 
 function Main {
     Write-Host "Configuring apps..."
+
+    Upgrade-All
 
     Configure-Path
     Configure-PwshExecutionPolicy
