@@ -70,7 +70,16 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+    git
+    gitfast
+    zsh-autosuggestions
+    common-aliases
+    zsh-syntax-highlighting
+    history-substring-search
+    zsh-z
+    zsh-exa
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -100,6 +109,21 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# TODO: Copy this format https://github.com/anishathalye/dotfiles/blob/master/zshrc
+
+# External settings
+source ~/.shell/external.sh
+
+# Aliases
+source ~/.shell/aliases.sh
+
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
+# Fuzzy finder
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Oh my posh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+    eval "$(oh-my-posh init zsh --config $HOME/.poshthemes/kushal.omp.json)"
+fi

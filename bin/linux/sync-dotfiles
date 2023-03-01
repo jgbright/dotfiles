@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ -z "$DOTFILES_DIR" ]; then
+    echo "DOTFILES_DIR is not set." >&2
+    exit 1
+fi
+
+if [ -f "$DOTFILES_DIR/.git/MERGE_HEAD" ]; then
+    echo "Merge conflict detected. Resolve the conflict and run this script again." >&2
+    # git rebase -C "$DOTFILES_DIR" --abort
+    exit 1
+fi
+pushd "$DOTFILES_DIR" >/dev/null
+git pull --rebase
+if [ -f "$DOTFILES_DIR/.git/MERGE_HEAD" ]; then
+    echo "Merge conflict detected. Resolve the conflict and run this script again." >&2
+    # git rebase -C "$DOTFILES_DIR" --abort
+    exit 1
+fi
+git push
+"$DOTFILES_DIR/install.sh"
+popd

@@ -1,0 +1,23 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.zshrc:
+    ~/.bash:
+    ~/.bash_logout:
+    ~/.bashrc:
+    ~/.profile:
+    ~/.shell:
+    ~/.local/bin/: 
+        create: true
+        glob: true
+        path: bin/linux/*
+    ~/.local/bin/update-dotfiles: install.sh
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
