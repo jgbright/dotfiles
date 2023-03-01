@@ -74,13 +74,14 @@ plugins=(
     common-aliases
     git
     gitfast
-    zsh-autosuggestions
     fzf-zsh-plugin
+    fasd
     zsh-syntax-highlighting
     history-substring-search
     zsh-z
     zsh-exa
 )
+    # zsh-autosuggestions
 
 source $ZSH/oh-my-zsh.sh
 

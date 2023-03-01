@@ -289,6 +289,7 @@ main() {
     apt_install unzip
     apt_install zsh
     apt_install mc
+    apt_install xdg-utils xdg-open
 
     install_ohmyzsh
     install_ohmyposh
