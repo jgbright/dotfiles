@@ -55,16 +55,23 @@ apt_install() {
     fi
 }
 
+upgrade_all() {
+    winget upgrade \
+        --all \
+        --accept-source-agreements \
+        --accept-package-agreements
+}
+
 install_ohmyzsh() {
     if [ -d "${HOME}/.oh-my-zsh" ]; then
         log "Oh My Zsh already installed."
-    else
-        log "Installing Oh My Zsh..."
-
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-        log "Installed Oh My Zsh."
+        return
     fi
+    log "Installing Oh My Zsh..."
+
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+    log "Installed Oh My Zsh."
 }
 
 install_ohmyposh() {
@@ -285,6 +292,8 @@ install_rustup() {
 
 main() {
     log "Installing apps..."
+
+    upgrade_all
 
     apt_install unzip
     apt_install zsh
