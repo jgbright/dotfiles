@@ -2,7 +2,12 @@
 	path = .dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
-
 [submodule "zsh/plugins/dircolors-solarized"]
 	path = shell/plugins/dircolors-solarized
 	url = https://github.com/seebi/dircolors-solarized.git
+[submodule "dotbot-crossplatform"]
+	path = dotbot-plugins/dotbot-crossplatform
+	url = git@github.com:msdrigg/dotbot-crossplatform.git
+[submodule "dotbot-conditional"]
+	path = dotbot-plugins/dotbot-conditional
+	url = https://gitlab.com/gnfzdz/dotbot-conditional.git

@@ -1,0 +1,39 @@
+FROM ubuntu:22.04
+
+ARG USERNAME=jason
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# More or less following the logic found here: 
+# https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user#_creating-a-nonroot-user
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends apt-utils && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN groupadd --gid $USER_GID $USERNAME && \
+    useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    apt-get update && \
+    apt-get install -y sudo && \
+    echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
+    chmod 0440 /etc/sudoers.d/$USERNAME && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    apt-get install -y curl git python3 && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
+    rm -rf /var/lib/apt/lists/*
+
+USER $USERNAME
+
+RUN git clone https://github.com/jgbright/dotfiles.git ~/.dotfiles && \
+    ~/.dotfiles/install
+
+# Update the motd to instruct the user on how to install dotfiles
+RUN echo >> /etc/motd && \
+    echo >> /etc/motd && \
+    echo "To install jgbright dotfiles, run this command: " >> /etc/motd && \
+    echo >> /etc/motd && \
+    echo "curl -s https://raw.githubusercontent.com/jgbright/dotfiles/main/install-remote.sh | bash" >> /etc/motd

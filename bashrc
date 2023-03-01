@@ -163,3 +163,16 @@ fi
 #     . /etc/bash_completion
 #   fi
 # fi
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# Rust
+. "$HOME/.cargo/env"
+
+# fzf
+
+# Oh my posh
+eval "$(oh-my-posh init bash --config "$HOME/.poshthemes/kushal.omp.json")"
+
+eval "$(zoxide init bash)"

@@ -1,0 +1,59 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.local/bin: bin/windows
+    # ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
+    # ~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
+#     ~/.bash:
+#     ~/.bash_logout:
+#     ~/.bashrc:
+#     ~/.profile:
+#     ~/.shell:
+#     ~/.local/bin: bin
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    -
+      command: pwsh -Command Write-Host "I am some output."
+      stdin: true
+      stdout: true
+      description: Installing applications
+    # -
+    #   command: pwsh -File ./dotbot-tools/install-apps.ps1
+    #   stdin: true
+    #   stdout: true
+    #   description: Installing applications
+    # -
+    #   command: pwsh -File ./dotbot-tools/configure-apps.ps1
+    #   stdin: true
+    #   stdout: true
+    #   description: Configuring applications
+    # -
+    #     command: read fail
+    #     stderr: true
+    # - [cd, cd]
+    # - [set, set]
+    # - [dir, dir]
+    # - [type .\dotbot-tools\install-apps.ps1, Dump script]
+    # - [pwsh -File ./dotbot-tools/install-apps.ps1, Installing applications]
+    # - [pwsh -File ./dotbot-tools/configure-apps.ps1, Configuring applications]
+
+# - conditional:
+#     if: 'command -v az'
+#     then:
+#         shell:
+#         - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+
+# - conditional:
+#     #pwsh?
+#     if: 'Get-Command '
+#     then:
+#         shell:
+#         - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash

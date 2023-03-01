@@ -1,0 +1,30 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Windows: Test Local",
+            "detail": "Install dotfiles into sandbox vm from local filesystem.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.wsb",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Windows: Test GitHub",
+            "detail": "Install dotfiles into sandbox vm from github.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-github.wsb"
+        },
+        {
+            "label": "Windows: Test Manual",
+            "detail": "Open sandbox vm with dotfiles ready to install.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-manual.wsb"
+        },
+    ]
+}
