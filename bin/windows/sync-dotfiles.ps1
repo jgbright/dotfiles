@@ -26,3 +26,4 @@ if (Test-Path "$env:DOTFILES_DIR\.git\MERGE_HEAD") {
 git push
 & "$env:DOTFILES_DIR\install.sh"
 popd
+
