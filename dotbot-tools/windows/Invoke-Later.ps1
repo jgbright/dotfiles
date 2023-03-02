@@ -198,11 +198,13 @@ $(Get-PSCallStack | Format-Table -AutoSize | Out-String)
         if ($RunAsAdministrator) {
             $StartProcessArgs['Verb'] = 'RunAs'
         }
+        else {
+            $StartProcessArgs['NoNewWindow'] = $true
+        }
         Start-Process `
             -FilePath $PwshCommandName `
             -ArgumentList "-ExecutionPolicy Bypass $FileOrCommand" `
             -Wait `
-            -NoNewWindow `
             @StartProcessArgs
     }
 

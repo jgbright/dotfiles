@@ -1,7 +1,7 @@
 <Configuration>
   <MappedFolders>
     <MappedFolder>
-      <HostFolder>..</HostFolder>
+      <HostFolder>..\..\..</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\.dotfiles</SandboxFolder>
       <ReadOnly>false</ReadOnly>
     </MappedFolder>
