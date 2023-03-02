@@ -375,17 +375,19 @@ function RestartScript {
     Write-Host "NextLogFileSlug: $NextLogFileSlug"
 
     Write-Host "PSCommandPath: $PSCommandPath"
-    Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+    # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
     # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
     # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
-    Write-Host "MyInvocation.UnboundArguments: $($MyInvocation.UnboundArguments | Out-String)"
+    # Write-Host "MyInvocation.UnboundArguments: $($MyInvocation.UnboundArguments | Out-String)"
 
     if ($PSCommandPath) {
         $Command = $PSCommandPath
     }
     else {
-        $Command = $MyInvocation.MyCommand.Definition
+        $Command = (Get-PSCallStack)[-1].Position.Text
     }
+
+    Write-Host "Command: $Command"
 
     Invoke-Later `
         -RunAsAdministrator `
