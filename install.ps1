@@ -36,7 +36,7 @@ function GetPwshCommandName {
 
 function ElevateIfNeeded {
     Write-Host "ElevateIfNeeded"
-    
+
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
         if ($Elevated) {
             Write-Host "We already attempted to elevate the process once, so I guess we can't..."
@@ -58,19 +58,20 @@ function ElevateIfNeeded {
     # BEGN 
 
     
-    $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
+    # $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
 
-    $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-    if ($PwshExe) {
-        return $PwshExe
-    }
+    # $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+    # if ($PwshExe) {
+    #     $PwshCommandName = $PwshExe
+    # }
 
-    if (Test-Path $PwshPathCandidate) {
-        return $PwshPathCandidate
-    }
+    # if (Test-Path $PwshPathCandidate) {
+    #     $PwshCommandName =  $PwshPathCandidate
+    # }
 
-    $PwshCommandName = Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+    # $PwshCommandName = Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
 
+    $PwshCommandName = GetPwshCommandName
     # END
 
     $StartProcessArgs = @{
