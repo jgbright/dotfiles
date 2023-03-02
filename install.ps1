@@ -518,6 +518,12 @@ function Main {
 
     $DOTBOT_BIN = "bin\dotbot"
     $BASEDIR = $PSScriptRoot
+    
+    Write-Host "BaseDir: $BASEDIR"
+    if (!$BASEDIR) {
+        $BASEDIR = (Get-Location).Path
+        Write-Host "BaseDir: $BASEDIR"
+    }
 
     [Environment]::SetEnvironmentVariable('DOTFILES_DIR', "$PSScriptRoot", 'User')
 
