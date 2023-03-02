@@ -35,8 +35,6 @@ function GetPwshCommandName {
 }
 
 function ElevateIfNeeded {
-    Write-Host "ElevateIfNeeded2"
-
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
         if ($Elevated) {
             Write-Host "We already attempted to elevate the process once, so I guess we can't..."
@@ -45,7 +43,7 @@ function ElevateIfNeeded {
     }
 
     if ($PSCommandPath) {
-        $ArgumentList = "-File '$PSCommandPath'"
+        $ArgumentList = "-File ""$PSCommandPath"""
     }
     else {
         $Command = (Get-PSCallStack)[-1].Position.Text
@@ -81,6 +79,8 @@ function ElevateIfNeeded {
         Wait         = $true
     }
     
+    Write-Host "Start-Process $StartProcessArgs"
+    $StartProcessArgs | ConvertTo-Json -Depth 99 | Write-Host 
     Start-Process @StartProcessArgs
     return $true
 }
