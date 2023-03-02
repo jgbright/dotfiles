@@ -42,12 +42,29 @@ function ElevateIfNeeded {
             return $true
         }
 
+        $StartProcessArgs = @{
+            FilePath = (Get-PwshCommandName)
+            ArgumentList = "-Command & '$Command' -Elevated"
+            Verb = 'RunAs'
+            Wait = $true
+        }
+
+        if ($PSCommandPath) {
+            $StartProcessArgs['FilePath'] = $PSCommandPath
+        }
+        else {
+            $Command = $MyInvocation.MyCommand.Definition
+            $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
+            $EncodedCommand = [Convert]::ToBase64String($Bytes)
+            $StartProcessArgs['EncodedCommand'] = $EncodedCommand
+        }
+
         # Relaunch as an elevated process:
         Start-Process `
             -Verb RunAs `
             -Wait `
             -FilePath (Get-PwshCommandName) `
-            -ArgumentList "-Command & '$($PSCommandPath)' -Elevated"
+            -ArgumentList "-EncodedCommand"
         return $true
     }
 }
@@ -105,7 +122,7 @@ function Install-WingetAndTools {
     # Expand-Archive Microsoft.UI.Xaml.2.8.2.zip
     # Add-AppxPackage ".\Microsoft.UI.Xaml.2.8.2\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.8.appx" -ErrorAction SilentlyContinue
 
-    
+
     # $url = "https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3"
     # $zipFile = "Microsoft.UI.Xaml.2.7.3.nupkg.zip"
     # Invoke-WebRequest https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile Microsoft.UI.Xaml.2.7.3.zip
@@ -136,7 +153,7 @@ function Add-AppxPackageFromUrl {
     if (!$Name) {
         $Name = $FileNameWithoutExtension
     }
-    
+
     Write-Host "Downloading $Name..."
     Start-BitsTransfer -Source $Uri -Destination $TempFile | Complete-BitsTransfer
     Write-Host "Downloaded $Name."
@@ -149,7 +166,7 @@ function Add-AppxPackageFromUrl {
 }
 
 function Install-MicrosoftUiXaml {
-    
+
     $TempDir = New-Item -ItemType Directory -Path $env:TEMP -Name "Microsoft.UI.Xaml_$([guid]::NewGuid())" -Verbose
     $Uri = 'https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3'
 
@@ -355,7 +372,6 @@ function RestartScript {
     }
     else {
         $Command = $MyInvocation.MyCommand.Definition
-        
     }
 
     Invoke-Later `
@@ -381,7 +397,7 @@ function Configure-PwshExecutionPolicy {
 
 function Main {
 
-        
+
     # This is actually pretty important to note as it will change and that change will impact the script.
 
     $Date = Get-Date -Format g
@@ -451,7 +467,7 @@ function Main {
     # -ScheduledTask `
     # -NextLogFileSlug 'configure-apps'
 
-    # return 
+    # return
 
     # For now, let's just give this script the ability to restart itself.  We'll do
     # something similar for the current user after we know we are on pwsh and not
@@ -461,7 +477,7 @@ function Main {
         -Scope Process `
         -Force
 
-        
+
     $CONFIG = ".install.windows.conf.yaml"
     $DOTBOT_DIR = ".dotbot"
 
