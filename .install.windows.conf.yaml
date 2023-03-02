@@ -9,7 +9,7 @@
 - link:
     ~/.local/bin: bin/windows
     ~/.gitconfig: gitconfig-windows
-    # ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
+    ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
     # ~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
 #     ~/.bash:
 #     ~/.bash_logout:

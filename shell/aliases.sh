@@ -10,7 +10,7 @@ gyolo() {
         git push
 }
 
-gi() {
+gstart() {
     initial_commit_message="chore: empty initial commit"
 
     git init && 

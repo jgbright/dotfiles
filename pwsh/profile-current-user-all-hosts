@@ -161,3 +161,20 @@ else {
 
 $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.2"
 # dotnet suggest script end
+
+
+function gstart {
+    # do actual thinggstart() {
+    $initial_commit_message = "chore: empty initial commit"
+
+    git init
+    if (!$?) {
+        throw 'error'
+    }
+    git commit --allow-empty --message "$initial_commit_message"
+    if (!$?) {
+        throw 'error'
+    }
+}
+
+Set-Alias gstart gstart
