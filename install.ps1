@@ -64,7 +64,8 @@ function ElevateIfNeeded {
             -Verb RunAs `
             -Wait `
             -FilePath (Get-PwshCommandName) `
-            -ArgumentList "-EncodedCommand"
+            @StartProcessArgs
+            # -ArgumentList "-EncodedCommand"
         return $true
     }
 }
