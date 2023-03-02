@@ -47,7 +47,7 @@ function ElevateIfNeeded {
     }
     else {
         $OriginalCommand = (Get-PSCallStack)[-1].Position.Text
-        $Command = "& { $Command } -Elevated"
+        $Command = "& { $OriginalCommand } -Elevated"
         $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
         $EncodedCommand = [Convert]::ToBase64String($Bytes)
         $ArgumentList = "-EncodedCommand $EncodedCommand"
@@ -448,7 +448,7 @@ function Main {
 
     if ($Elevated) {
         Write-Host "Elevated: $Elevated"
-        
+
     }
 
     # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
