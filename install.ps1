@@ -39,7 +39,7 @@ function ElevateIfNeeded {
     {
         if ($Elevated) {
             Write-Host "We already attempted to elevate the process once, so I guess we can't..."
-            exit
+            return $true
         }
 
         # Relaunch as an elevated process:
@@ -48,7 +48,7 @@ function ElevateIfNeeded {
             -Wait `
             -FilePath (Get-PwshCommandName) `
             -ArgumentList "-Command & '$($PSCommandPath)' -Elevated"
-        exit
+        return $true
     }
 }
 
@@ -413,7 +413,9 @@ function Main {
     Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
     Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 
-    ElevateIfNeeded
+    if (ElevateIfNeeded) {
+        return
+    }
 
     # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Path
     # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Name
