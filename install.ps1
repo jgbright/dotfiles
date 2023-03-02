@@ -517,20 +517,18 @@ function Main {
     $DOTBOT_DIR = ".dotbot"
 
     $DOTBOT_BIN = "bin\dotbot"
-    $BASEDIR = $PSScriptRoot
-    
-    Write-Host "BaseDir: $BASEDIR"
-    if (!$BASEDIR) {
-        $BASEDIR = $env:DOTFILES_DIR
-        Write-Host "BaseDir using DOTFILES_DIR env var: $BASEDIR"
+
+    $BASEDIR = ""
+    $NeedToInstallRepo = $false
+    if ($PSScriptRoot) {
+        $BASEDIR = $PSScriptRoot
     }
-    if (!$BASEDIR) {
-        $BASEDIR = "$home\.dotfiles"
-        Write-Host "BaseDir using `$home\.dotfiles: $BASEDIR"
+    else {
+        $BASEDIR = (Get-Location).Path
+        $NeedToInstallRepo = $true
     }
 
-    Write-Host "Setting DOTFILES_DIR to $BASEDIR"
-    [Environment]::SetEnvironmentVariable('DOTFILES_DIR', "$BASEDIR", 'User')
+    Write-Host "BaseDir: $BASEDIR"
 
     # If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     #     Write-Host "Restarting as administrator..."
@@ -595,6 +593,11 @@ function Main {
     Configure-PwshExecutionPolicy
 
     Write-Host "Finished installing prerequisites."
+
+    if ($NeedToInstallRepo) {
+        Write-Host "Installing dotfiles repository..."
+        git clone https://github.com/jgbright/dotfiles $BASEDIR
+    }
 
     Write-Host "Installing local dotfiles repository in $DOTBOT_DIR..."
     git -C $DOTBOT_DIR submodule sync --quiet --recursive
