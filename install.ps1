@@ -439,9 +439,13 @@ function Main {
     Write-Host "SHELL: $PowershellName $PowershellVersion"
 
     Write-Host "PSCommandPath: $PSCommandPath"
-    Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
-    Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
-    Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+    if (!$PSCommandPath) {
+        Write-Host "$MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+    }
+    
+    # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+    # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+    # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 
     if (ElevateIfNeeded) {
         return
