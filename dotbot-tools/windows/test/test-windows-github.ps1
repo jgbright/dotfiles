@@ -10,7 +10,9 @@ Invoke-Later `
     -DisableCommandEncoding `
     -NextLogFileSlug 'install.ps1-github-first-run' `
     -RunAsAdministrator `
-    -File ([System.IO.Path]::GetFullPath("$PSScriptRoot/../../../install.ps1"))
+    -Command "Invoke-RestMethod https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1 | Invoke-Expression"
+
+    # -File ([System.IO.Path]::GetFullPath("$PSScriptRoot/../../../install.ps1"))
 
 
 # if ($false) {
