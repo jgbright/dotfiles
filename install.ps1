@@ -350,12 +350,20 @@ function RestartScript {
     # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
     Write-Host "MyInvocation.UnboundArguments: $($MyInvocation.UnboundArguments | Out-String)"
 
+    if ($PSCommandPath) {
+        $Command = $PSCommandPath
+    }
+    else {
+        $Command = $MyInvocation.MyCommand.Definition
+        
+    }
+
     Invoke-Later `
         -RunAsAdministrator `
-        -File $PSCommandPath `
         -ScheduledTask `
         -NextLogFileSlug $NextLogFileSlug `
-        -Delay $Delay
+        -Delay $Delay `
+        -Command $Command
 
     Write-Host "Restarted script."
 }
