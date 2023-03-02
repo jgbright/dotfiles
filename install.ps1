@@ -35,8 +35,7 @@ function GetPwshCommandName {
 }
 
 function ElevateIfNeeded {
-    If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
-    {
+    If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
         if ($Elevated) {
             Write-Host "We already attempted to elevate the process once, so I guess we can't..."
             return $true
@@ -73,10 +72,10 @@ function ElevateIfNeeded {
     # END
 
     $StartProcessArgs = @{
-        FilePath = $PwshCommandName
+        FilePath     = $PwshCommandName
         ArgumentList = $ArgumentList
-        Verb = 'RunAs'
-        Wait = $true
+        Verb         = 'RunAs'
+        Wait         = $true
     }
     
     Start-Process @StartProcessArgs
@@ -418,7 +417,8 @@ function Main {
     $PowershellVersion = $PSVersionTable.PSVersion
     if ($PSVersionTable.PSEdition -eq 'Core') {
         $PowershellName = 'pwsh'
-    } else {
+    }
+    else {
         $PowershellName = 'PowerShell'
     }
 
