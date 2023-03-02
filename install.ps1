@@ -477,7 +477,7 @@ function Main {
     (Test-Path $PSCommandPath) -and `
     (Test-Path "$([System.IO.Path]::GetDirectoryName($PSCommandPath))\dotbot-tools\windows\Invoke-Later.ps1")
 
-    $CommandToRestartScript = $MyInvocation.MyCommand.Definition
+    $CommandToRestartScript = if ($PSCommandPath) { $PSCommandPath } else { (Get-PSCallStack)[-1].Position.Text }
 
     Write-Host "IsRepoAvailable: $IsRepoAvailable"
     Write-Host "IsRepoReallyAvailable: $IsRepoReallyAvailable"
