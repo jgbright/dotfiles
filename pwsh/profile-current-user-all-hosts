@@ -177,4 +177,26 @@ function gstart {
     }
 }
 
-Set-Alias gstart gstart
+# Set-Alias gstart gstart
+
+
+function gyolo {
+    $wip_commit_message = @"
+-- wip --
+
+[nocicd]
+"@
+
+    git add --all
+    if (!$?) {
+        throw 'error'
+    }
+    git commit -m "$wip_commit_message"
+    if (!$?) {
+        throw 'error'
+    }
+    git push
+    if (!$?) {
+        throw 'error'
+    }
+}

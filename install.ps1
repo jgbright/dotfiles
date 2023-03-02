@@ -9,7 +9,9 @@
 #>
 
 [CmdletBinding()]
-param ()
+param (
+    [switch]$Elevated
+)
 
 $ErrorActionPreference = "Stop"
 
@@ -17,93 +19,40 @@ trap {
     Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)"
 }
 
-# Write-Host "PSCommandPath: $PSCommandPath"
-# Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
-# Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
-# Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+function Get-PwshCommandName {
+    $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
 
-# This is actually pretty important to note as it will change and that change will impact the script.
+    $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+    if ($PwshExe) {
+        return $PwshExe
+    }
 
-$Date = Get-Date -Format g
-$PowershellVersion = $PSVersionTable.PSVersion
-if ($PSVersionTable.PSEdition -eq 'Core') {
-$PowershellName = 'pwsh'
-} else {
-$PowershellName = 'PowerShell'
-}
-# $Platform = [Environment]::OSVersion.Platform
-# $OsVersion = [Environment]::OSVersion | Format-List | Out-String
-if ([Environment]::OSVersion.Platform -eq 'Unix') {
-    $OperatingSystem = $(lsb_release -sd)
-}
-else {
-    $OperatingSystem = (Get-WmiObject -class Win32_OperatingSystem).Caption
+    if (Test-Path $PwshPathCandidate) {
+        return $PwshPathCandidate
+    }
+
+    return Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
 }
 
-$MachineName = [Environment]::MachineName
-$UserName = [Environment]::UserName
+function ElevateIfNeeded {
+    If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
+    {
+        if ($Elevated) {
+            Write-Host "We already attempted to elevate the process once, so I guess we can't..."
+            exit
+        }
 
-Write-Host "Installing Jason's dotfiles."
-Write-Host "DATE: $Date -- USER@HOST: $UserName@$MachineName -- OS: $OperatingSystem -- SHELL: $PowershellName $PowershellVersion"
-Write-Host "Date: $(Get-Date -Format g)"
-Write-Host "Powershell version: $($PSVersionTable.PSVersion)"
-Write-Host "OS version: $([Environment]::OSVersion | Format-List | Out-String)"
-Write-Host "MachineName: $([Environment]::MachineName)"
-Write-Host "UserName: $([Environment]::UserName)"
-
-Write-Host "$([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)"
-
-$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-$IsAdministrator = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-# if (!$IsAdministrator) {
-#     Write-Host "This script must be run as administrator."
-#     exit 1
-# }
-Write-Host "IsAdministrator: $IsAdministrator"
-
-# $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Path
-# $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Name
-$IsRepoAvailable = [boolean]$PSCommandPath
-$IsRepoReallyAvailable = [boolean]$PSCommandPath -and (Test-Path $PSCommandPath)
-$IsRepoReallyReallyAvailable = `
-    [boolean]$PSCommandPath -and `
-(Test-Path $PSCommandPath) -and `
-(Test-Path "$([System.IO.Path]::GetDirectoryName($PSCommandPath))\dotbot-tools\windows\Invoke-Later.ps1")
-
-$CommandToRestartScript = $MyInvocation.MyCommand.Definition
-
-Write-Host "IsRepoAvailable: $IsRepoAvailable"
-Write-Host "IsRepoReallyAvailable: $IsRepoReallyAvailable"
-Write-Host "IsRepoReallyReallyAvailable: $IsRepoReallyReallyAvailable"
-Write-Host "CommandToRestartScript: $CommandToRestartScript"
-
-if ($IsRepoAvailable) {
-    Write-Host "Importing Invoke-Later.ps1..."
-    . "$PSScriptRoot/dotbot-tools/windows/Invoke-Later.ps1"
-    Write-Host "Imported Invoke-Later.ps1."
-}
-else {
-    Write-Host "Downloading Invoke-Later.ps1..."
-    # Invoke-Expression ". { $(Invoke-RestMethod https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/Invoke-Later.ps1) }"
-    (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Invoke-Later.ps1') | Invoke-Expression
-    Write-Host "Downloaded Invoke-Later.ps1."
+        # Relaunch as an elevated process:
+        Start-Process `
+            -Verb RunAs `
+            -Wait `
+            -FilePath (Get-PwshCommandName) `
+            -ArgumentList "-Command & '$($PSCommandPath)' -Elevated"
+        exit
+    }
 }
 
 
-# Invoke-Later `
-# -File "$PSScriptRoot/dotbot-tools/windows/install/configure-apps.ps1" `
-# -ScheduledTask `
-# -NextLogFileSlug 'configure-apps'
-
-# return 
-
-# For now, let's just give this script the ability to restart itself.  We'll do
-# something similar for the current user after we know we are on pwsh and not
-# powershell.
-Set-ExecutionPolicy `
-    -ExecutionPolicy Bypass `
-    -Scope Process `
-    -Force
 
 <#
 Install winget using the WingetTools pwsh module.
@@ -379,11 +328,12 @@ function Install-WingetProgram {
     }
 }
 
+
+
 function RestartScript {
     [CmdletBinding()]
     param (
         [string]$NextLogFileSlug,
-        [switch]$ScheduledTask,
         [TimeSpan]$Delay = [TimeSpan]::FromSeconds(10)
     )
 
@@ -393,18 +343,17 @@ function RestartScript {
     # $ArgumentList = $MyInvocation.UnboundArguments
 
     Write-Host "NextLogFileSlug: $NextLogFileSlug"
-    Write-Host "ScheduledTask: $ScheduledTask"
 
     Write-Host "PSCommandPath: $PSCommandPath"
     Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
-    Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
-    Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+    # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+    # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
     Write-Host "MyInvocation.UnboundArguments: $($MyInvocation.UnboundArguments | Out-String)"
 
     Invoke-Later `
         -RunAsAdministrator `
         -File $PSCommandPath `
-        -ScheduledTask:$ScheduledTask `
+        -ScheduledTask `
         -NextLogFileSlug $NextLogFileSlug `
         -Delay $Delay
 
@@ -424,6 +373,85 @@ function Configure-PwshExecutionPolicy {
 
 function Main {
 
+        
+    # This is actually pretty important to note as it will change and that change will impact the script.
+
+    $Date = Get-Date -Format g
+    $PowershellVersion = $PSVersionTable.PSVersion
+    if ($PSVersionTable.PSEdition -eq 'Core') {
+        $PowershellName = 'pwsh'
+    } else {
+        $PowershellName = 'PowerShell'
+    }
+
+    if ([Environment]::OSVersion.Platform -eq 'Unix') {
+        $OperatingSystem = $(lsb_release -sd)
+    }
+    else {
+        $OperatingSystem = (Get-WmiObject -class Win32_OperatingSystem).Caption
+    }
+
+    $MachineName = [Environment]::MachineName
+    $UserName = [Environment]::UserName
+
+    Write-Host "Installing jgbright/dotfiles..."
+    Write-Host "DATE: $Date"
+    Write-Host "USER@HOST: $UserName@$MachineName"
+    Write-Host "OS: $OperatingSystem"
+    Write-Host "SHELL: $PowershellName $PowershellVersion"
+
+    Write-Host "PSCommandPath: $PSCommandPath"
+    Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+    Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+    Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+
+    ElevateIfNeeded
+
+    # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Path
+    # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Name
+    $IsRepoAvailable = [boolean]$PSCommandPath
+    $IsRepoReallyAvailable = [boolean]$PSCommandPath -and (Test-Path $PSCommandPath)
+    $IsRepoReallyReallyAvailable = `
+        [boolean]$PSCommandPath -and `
+    (Test-Path $PSCommandPath) -and `
+    (Test-Path "$([System.IO.Path]::GetDirectoryName($PSCommandPath))\dotbot-tools\windows\Invoke-Later.ps1")
+
+    $CommandToRestartScript = $MyInvocation.MyCommand.Definition
+
+    Write-Host "IsRepoAvailable: $IsRepoAvailable"
+    Write-Host "IsRepoReallyAvailable: $IsRepoReallyAvailable"
+    Write-Host "IsRepoReallyReallyAvailable: $IsRepoReallyReallyAvailable"
+    Write-Host "CommandToRestartScript: $CommandToRestartScript"
+    Write-Host "PSCommandPath: $PSCommandPath"
+
+    if ($IsRepoAvailable) {
+        Write-Host "Importing Invoke-Later.ps1..."
+        . "$PSScriptRoot/dotbot-tools/windows/Invoke-Later.ps1"
+        Write-Host "Imported Invoke-Later.ps1."
+    }
+    else {
+        Write-Host "Downloading Invoke-Later.ps1..."
+        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Invoke-Later.ps1') | Invoke-Expression
+        Write-Host "Downloaded Invoke-Later.ps1."
+    }
+
+
+    # Invoke-Later `
+    # -File "$PSScriptRoot/dotbot-tools/windows/install/configure-apps.ps1" `
+    # -ScheduledTask `
+    # -NextLogFileSlug 'configure-apps'
+
+    # return 
+
+    # For now, let's just give this script the ability to restart itself.  We'll do
+    # something similar for the current user after we know we are on pwsh and not
+    # powershell.
+    Set-ExecutionPolicy `
+        -ExecutionPolicy Bypass `
+        -Scope Process `
+        -Force
+
+        
     $CONFIG = ".install.windows.conf.yaml"
     $DOTBOT_DIR = ".dotbot"
 
@@ -432,27 +460,29 @@ function Main {
 
     [Environment]::SetEnvironmentVariable('DOTFILES_DIR', "$PSScriptRoot", 'User')
 
-    If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-        Write-Host "Restarting as administrator..."
-        $pwsh = 'pwsh', 'powershell' | % { Get-Command $_ -ErrorAction SilentlyContinue } | Select-Object -First 1 | Select-Object -ExpandProperty Path
+    ElevateIfNeeded
+    # If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    #     Write-Host "Restarting as administrator..."
+    #     $pwsh = 'pwsh', 'powershell' | % { Get-Command $_ -ErrorAction SilentlyContinue } | Select-Object -First 1 | Select-Object -ExpandProperty Path
 
-        RestartScript
+    #     RestartScript `
+    #         -NextLogFileSlug 'elevate-to-administrator'
 
-        # if ($PSVersionTable.PSEdition -eq 'Core') {
-        #     $pwsh = 'pwsh.exe'
-        # } else {
-        #     $pwsh = 'powershell.exe'
-        # }
-        Write-Host "MyInvocation.MyCommand.Path: $($MyInvocation.MyCommand.Path)"
-        write-Host "PSCommandPath: $PSCommandPath"
-        Write-Host "pwsh: $pwsh"
-        Read-Host "Press enter to continue..."
-        Start-Process `
-            -FilePath $pwsh `
-            -ArgumentList "-File ""$PSCommandPath""" `
-            -Verb RunAs
-        return
-    }
+    #     # if ($PSVersionTable.PSEdition -eq 'Core') {
+    #     #     $pwsh = 'pwsh.exe'
+    #     # } else {
+    #     #     $pwsh = 'powershell.exe'
+    #     # }
+    #     # Write-Host "MyInvocation.MyCommand.Path: $($MyInvocation.MyCommand.Path)"
+    #     # write-Host "PSCommandPath: $PSCommandPath"
+    #     # Write-Host "pwsh: $pwsh"
+    #     # Read-Host "Press enter to continue..."
+    #     # Start-Process `
+    #     #     -FilePath $pwsh `
+    #     #     -ArgumentList "-File ""$PSCommandPath""" `
+    #     #     -Verb RunAs
+    #     return
+    # }
 
     Get-Service bits | Start-Service
 
@@ -484,7 +514,7 @@ function Main {
             Write-Host "We're running PowerShell instead of pwsh."
         }
         Write-Host "Restarting script..."
-        RestartScript -ScheduledTask -NextLogFileSlug 'install.ps1-after-installing-core-tools'
+        RestartScript -NextLogFileSlug 'install.ps1-after-installing-core-tools'
         Write-Host "Restarted script."
         return
     }
@@ -569,6 +599,11 @@ function Main {
 
     Write-Error "Error: Cannot find Python."
 }
+
+# These need to be top-level in this file, because the context will change.
+Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 
 Main
 
