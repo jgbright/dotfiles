@@ -85,7 +85,20 @@ function Invoke-Later {
     Write-Host "[Invoke-Later] Description: $Description"
 
     if (!$PwshCommandName) {
-        $PwshCommandName = Get-PwshCommandName
+        # $PwshCommandName = Get-PwshCommandName
+
+        $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
+
+        $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+        if ($PwshExe) {
+            return $PwshExe
+        }
+
+        if (Test-Path $PwshPathCandidate) {
+            return $PwshPathCandidate
+        }
+
+        $PwshCommandName = Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
     }
 
     if (!$TaskName) {
