@@ -529,7 +529,8 @@ function Main {
         Write-Host "BaseDir using `$home\.dotfiles: $BASEDIR"
     }
 
-    [Environment]::SetEnvironmentVariable('DOTFILES_DIR', "$PSScriptRoot", 'User')
+    Write-Host "Setting DOTFILES_DIR to $BASEDIR"
+    [Environment]::SetEnvironmentVariable('DOTFILES_DIR', "$BASEDIR", 'User')
 
     # If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     #     Write-Host "Restarting as administrator..."
