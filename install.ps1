@@ -41,33 +41,27 @@ function ElevateIfNeeded {
             Write-Host "We already attempted to elevate the process once, so I guess we can't..."
             return $true
         }
-
-        $StartProcessArgs = @{
-            FilePath = (Get-PwshCommandName)
-            ArgumentList = "-Command & '$Command' -Elevated"
-            Verb = 'RunAs'
-            Wait = $true
-        }
-
-        if ($PSCommandPath) {
-            $StartProcessArgs['FilePath'] = $PSCommandPath
-        }
-        else {
-            $Command = $MyInvocation.MyCommand.Definition
-            $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
-            $EncodedCommand = [Convert]::ToBase64String($Bytes)
-            $StartProcessArgs['EncodedCommand'] = $EncodedCommand
-        }
-
-        # Relaunch as an elevated process:
-        Start-Process `
-            -Verb RunAs `
-            -Wait `
-            -FilePath (Get-PwshCommandName) `
-            @StartProcessArgs
-            # -ArgumentList "-EncodedCommand"
-        return $true
     }
+
+    if ($PSCommandPath) {
+        $ArgumentList = "-File '$PSCommandPath'"
+    }
+    else {
+        $Command = $MyInvocation.MyCommand.Definition
+        $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
+        $EncodedCommand = [Convert]::ToBase64String($Bytes)
+        $ArgumentList = "-EncodedCommand $EncodedCommand"
+    }
+        
+    $StartProcessArgs = @{
+        FilePath = (Get-PwshCommandName)
+        ArgumentList = $ArgumentList
+        Verb = 'RunAs'
+        Wait = $true
+    }
+    
+    Start-Process @StartProcessArgs
+    return $true
 }
 
 
