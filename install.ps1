@@ -442,7 +442,7 @@ function Main {
     if (!$PSCommandPath) {
         Write-Host "$MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
     }
-    
+
     # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
     # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
     # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
@@ -644,9 +644,10 @@ function Main {
 }
 
 # These need to be top-level in this file, because the context will change.
-Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
-Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
-Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+
+# Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+# Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+# Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 
 Main
 
