@@ -86,7 +86,7 @@ function ElevateIfNeeded {
         FilePath     = $PwshCommandName
         ArgumentList = $ArgumentList
         Verb         = 'RunAs'
-        Wait         = $true
+        # Wait         = $true
     }
     
     Write-Host "Start-Process $StartProcessArgs"
