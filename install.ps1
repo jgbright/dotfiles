@@ -46,7 +46,7 @@ function ElevateIfNeeded {
         $ArgumentList = "-File '$PSCommandPath'"
     }
     else {
-        $Command = $MyInvocation.MyCommand.Definition
+        $Command = (Get-PSCallStack)[-1].Position.Text
         $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
         $EncodedCommand = [Convert]::ToBase64String($Bytes)
         $ArgumentList = "-EncodedCommand $EncodedCommand"
@@ -440,7 +440,7 @@ function Main {
 
     Write-Host "PSCommandPath: $PSCommandPath"
     if (!$PSCommandPath) {
-        Write-Host "$MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+        Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
     }
 
     # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
