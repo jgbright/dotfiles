@@ -10,6 +10,13 @@ gyolo() {
         git push
 }
 
+gi() {
+    initial_commit_message="chore: empty initial commit"
+
+    git init && 
+        git commit --allow-empty --message "$initial_commit_message"
+}
+
 # # Use colors in coreutils utilities output
 # alias ls='ls --color=auto'
 # alias grep='grep --color'

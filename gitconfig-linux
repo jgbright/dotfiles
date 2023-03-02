@@ -13,5 +13,3 @@
 	defaultBranch = main
 [sequence]
 	editor = rebase-editor
-[alias]
-	start = !git init && git commit --allow-empty -m \\\"chore: empty initial commit\\\"
