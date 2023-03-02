@@ -35,6 +35,8 @@ function GetPwshCommandName {
 }
 
 function ElevateIfNeeded {
+    Write-Host "ElevateIfNeeded"
+    
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
         if ($Elevated) {
             Write-Host "We already attempted to elevate the process once, so I guess we can't..."
