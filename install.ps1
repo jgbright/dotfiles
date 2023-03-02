@@ -19,7 +19,7 @@ trap {
     Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)"
 }
 
-function Get-PwshCommandName {
+function GetPwshCommandName {
     $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
 
     $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
@@ -52,9 +52,9 @@ function ElevateIfNeeded {
         $EncodedCommand = [Convert]::ToBase64String($Bytes)
         $ArgumentList = "-EncodedCommand $EncodedCommand"
     }
-        
+
     $StartProcessArgs = @{
-        FilePath = (Get-PwshCommandName)
+        FilePath = (GetPwshCommandName)
         ArgumentList = $ArgumentList
         Verb = 'RunAs'
         Wait = $true
