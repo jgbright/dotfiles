@@ -11,7 +11,7 @@
     ~/.bash:
     ~/.bash_logout:
     ~/.bashrc:
-    ~/.gitconfig:
+    ~/.gitconfig: gitconfig-linux
     ~/.profile:
     ~/.shell:
     ~/.local/bin/: 
