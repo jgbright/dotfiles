@@ -39,6 +39,8 @@ function ElevateIfNeeded {
         return $false
     }
 
+    Write-Host "Not an admin."
+
     if ($Elevated) {
         Write-Host "We already attempted to elevate the process once, so I guess we can't..."
         return $true
