@@ -46,7 +46,8 @@ function ElevateIfNeeded {
         $ArgumentList = "-File ""$PSCommandPath"""
     }
     else {
-        $Command = (Get-PSCallStack)[-1].Position.Text
+        $OriginalCommand = (Get-PSCallStack)[-1].Position.Text
+        $Command = "& { $Command } -Elevated"
         $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
         $EncodedCommand = [Convert]::ToBase64String($Bytes)
         $ArgumentList = "-EncodedCommand $EncodedCommand"
@@ -444,6 +445,11 @@ function Main {
     Write-Host "SHELL: $PowershellName $PowershellVersion"
 
     Write-Host "PSCommandPath: $PSCommandPath"
+
+    if ($Elevated) {
+        Write-Host "Elevated: $Elevated"
+        
+    }
 
     # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
     # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
