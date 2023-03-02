@@ -1,8 +1,12 @@
 # alias gyolo='git add --all && git commit -m "-- wip --  [nocicd]" && git push'
 
 gyolo() {
+    wip_commit_message="-- wip --
+
+[nocicd]"
+
     git add --all &&
-        git commit -m "-- wip --\n\n[nocicd]" &&
+        git commit -m "$wip_commit_message" &&
         git push
 }
 
