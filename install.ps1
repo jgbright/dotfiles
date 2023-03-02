@@ -35,7 +35,7 @@ function GetPwshCommandName {
 }
 
 function ElevateIfNeeded {
-    Write-Host "ElevateIfNeeded"
+    Write-Host "ElevateIfNeeded2"
 
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
         if ($Elevated) {
