@@ -177,9 +177,6 @@ function gstart {
     }
 }
 
-# Set-Alias gstart gstart
-
-
 function gyolo {
     $wip_commit_message = @"
 -- wip --
