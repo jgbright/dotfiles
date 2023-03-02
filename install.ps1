@@ -50,6 +50,8 @@ function ElevateIfNeeded {
         $Command = "& { $OriginalCommand } -Elevated"
         $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
         $EncodedCommand = [Convert]::ToBase64String($Bytes)
+        Write-Host "EncodedCommand: $EncodedCommand"
+        write-Host "OriginalCommand: $OriginalCommand"
         $ArgumentList = "-EncodedCommand $EncodedCommand"
     }
 
