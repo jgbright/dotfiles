@@ -13,6 +13,8 @@ Invoke-Later `
     -Command "Invoke-RestMethod ""https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1?random-seed=$(Get-Random)"" | Invoke-Expression"
 
     # Invoke-RestMethod "https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1?random-seed=$(Get-Random)" | Invoke-Expression
+
+    # (New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1?random-seed=$(Get-Random)") | Invoke-Expression
     
     # -File ([System.IO.Path]::GetFullPath("$PSScriptRoot/../../../install.ps1"))
 
