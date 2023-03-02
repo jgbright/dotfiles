@@ -503,12 +503,12 @@ function Main {
     # Install software that will be used or configured later.  In particular,
     # these are programs known to require a new process before you can start
     # using them.
-    @(
-        'Microsoft.PowerShell',
-        'Git.Git',
-        'Python.Python.3.11',
-        'Microsoft.DotNet.SDK.6'
-    ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
+    # @(
+    #     'Microsoft.PowerShell',
+    #     'Git.Git',
+    #     'Python.Python.3.11',
+    #     'Microsoft.DotNet.SDK.6'
+    # ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
 
     # Look for a reason to restart the script.  It would be nice to avoid a restart if possible.
     $RequiredCommands = 'git', 'python', 'pwsh', 'dotnet'

@@ -10,7 +10,7 @@ Invoke-Later `
     -DisableCommandEncoding `
     -NextLogFileSlug 'install.ps1-github-first-run' `
     -RunAsAdministrator `
-    -Command "Invoke-RestMethod https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1 | Invoke-Expression"
+    -Command "Invoke-RestMethod ""https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1?random-seed=$(Get-Random)"" | Invoke-Expression"
 
     # -File ([System.IO.Path]::GetFullPath("$PSScriptRoot/../../../install.ps1"))
 
