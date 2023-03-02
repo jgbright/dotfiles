@@ -16,7 +16,7 @@ if (Test-Path "$env:DOTFILES_DIR\.git\MERGE_HEAD") {
 Push-Location $env:DOTFILES_DIR
 
 git add -A
-git commit --message '-- wip --\n\n[nocicd]'
+git commit --message '-- wip --  [nocicd]'
 git pull --rebase
 if (Test-Path "$env:DOTFILES_DIR\.git\MERGE_HEAD") {
     Write-Error "Merge conflict detected. Resolve the conflict and run this script again."

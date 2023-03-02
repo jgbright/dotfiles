@@ -1,4 +1,4 @@
-alias gyolo='git add --all && git commit -m "-- wip --\n\n[nocicd]" && git push'
+alias gyolo='git add --all && git commit -m "-- wip --  [nocicd]" && git push'
 
 # # Use colors in coreutils utilities output
 # alias ls='ls --color=auto'
