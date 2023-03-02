@@ -524,6 +524,10 @@ function Main {
         $BASEDIR = (Get-Location).Path
         Write-Host "BaseDir: $BASEDIR"
     }
+    if (!$BASEDIR) {
+        $BASEDIR = "$home\.dotfiles"
+        Write-Host "BaseDir: $BASEDIR"
+    }
 
     [Environment]::SetEnvironmentVariable('DOTFILES_DIR', "$PSScriptRoot", 'User')
 
