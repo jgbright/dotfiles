@@ -53,8 +53,27 @@ function ElevateIfNeeded {
         $ArgumentList = "-EncodedCommand $EncodedCommand"
     }
 
+
+    # BEGN 
+
+    
+    $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
+
+    $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+    if ($PwshExe) {
+        return $PwshExe
+    }
+
+    if (Test-Path $PwshPathCandidate) {
+        return $PwshPathCandidate
+    }
+
+    $PwshCommandName = Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+
+    # END
+
     $StartProcessArgs = @{
-        FilePath = (GetPwshCommandName)
+        FilePath = $PwshCommandName
         ArgumentList = $ArgumentList
         Verb = 'RunAs'
         Wait = $true
