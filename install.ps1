@@ -470,7 +470,6 @@ function Main {
 
     [Environment]::SetEnvironmentVariable('DOTFILES_DIR', "$PSScriptRoot", 'User')
 
-    ElevateIfNeeded
     # If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     #     Write-Host "Restarting as administrator..."
     #     $pwsh = 'pwsh', 'powershell' | % { Get-Command $_ -ErrorAction SilentlyContinue } | Select-Object -First 1 | Select-Object -ExpandProperty Path
