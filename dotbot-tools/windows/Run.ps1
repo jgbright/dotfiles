@@ -1,11 +1,10 @@
 function Get-PwshCommandName {
-    $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
-
     $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
     if ($PwshExe) {
         return $PwshExe
     }
-
+    
+    $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
     if (Test-Path $PwshPathCandidate) {
         return $PwshPathCandidate
     }

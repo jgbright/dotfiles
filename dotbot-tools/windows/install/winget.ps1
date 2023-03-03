@@ -1,6 +1,73 @@
 Set-StrictMode -Version 3.0
 
-$InstalledSoftware = @()
+<#
+Install winget using the WingetTools pwsh module.
+https://github.com/jdhitsolutions/WingetTools
+#>
+function Install-WingetAndTools {
+    $PreviousProgressPreference = $ProgressPreference
+    $ProgressPreference = 'SilentlyContinue'
+
+    try {
+        if (!(Get-PackageProvider | Where-Object Name -eq NuGet)) {
+            Write-Host "Installing NuGet pwsh package provider..."
+            Get-PackageProvider NuGet -ForceBootstrap | Out-Null
+            Write-Host "Installed NuGet pwsh package provider."
+        }
+
+        if (!(Get-InstalledModule -Name WingetTools -ErrorAction SilentlyContinue)) {
+            Write-Host "Installing WingetTools..."
+            Install-Module WingetTools -Scope CurrentUser -Force
+            Write-Host "Installed WingetTools."
+        }
+
+        if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
+            Write-Host "Installing winget..."
+            Install-WinGet
+            Write-Host "Installed winget."
+        }
+    }
+    finally {
+        $ProgressPreference = $PreviousProgressPreference
+    }
+
+    # Below is an another way to install winget that uses Add-AppxPackageFromUrl.
+
+    # Add-AppxPackageFromUrl https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx
+    # Add-AppxPackageFromUrl https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+
+
+    # Install Terminal
+
+
+    # irm https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -o Microsoft.VCLibs.appx
+    # Add-AppxPackage .\Microsoft.VCLibs.appx
+    # Remove-Item .\Microsoft.VCLibs.appx
+
+
+    # $url = "https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.8.2"
+    # $zipFile = "Microsoft.UI.Xaml.2.8.2.nupkg.zip"
+    # Invoke-WebRequest https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.8.2 -OutFile Microsoft.UI.Xaml.2.8.2.zip
+    # Expand-Archive Microsoft.UI.Xaml.2.8.2.zip
+    # Add-AppxPackage ".\Microsoft.UI.Xaml.2.8.2\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.8.appx" -ErrorAction SilentlyContinue
+
+
+    # $url = "https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3"
+    # $zipFile = "Microsoft.UI.Xaml.2.7.3.nupkg.zip"
+    # Invoke-WebRequest https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile Microsoft.UI.Xaml.2.7.3.zip
+    # Expand-Archive Microsoft.UI.Xaml.2.7.3.zip
+    # Add-AppxPackage ".\Microsoft.UI.Xaml.2.7.3\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx" -ErrorAction SilentlyContinue
+
+    # irm https://github.com/microsoft/terminal/releases/download/v1.16.10261.0/Microsoft.WindowsTerminal_Win11_1.16.10262.0_8wekyb3d8bbwe.msixbundle -o Microsoft.WindowsTerminal_Win11_1.msixbundle
+    # Add-AppxPackage .\Microsoft.WindowsTerminal_Win11_1.msixbundle
+    # Remove-Item .\Microsoft.WindowsTerminal_Win11_1.msixbundle
+
+
+    # Add-AppxPackage https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx
+    # Add-AppxPackage https://github.com/microsoft/terminal/releases/download/v1.16.10261.0/Microsoft.WindowsTerminal_Win11_1.16.10262.0_8wekyb3d8bbwe.msixbundle
+    # Add-AppxPackageFromUrl https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+
+}
 
 function Install-WingetProgram {
     [CmdletBinding(SupportsShouldProcess)]
@@ -9,18 +76,23 @@ function Install-WingetProgram {
         [object[]]
         $Programs,
 
+        [Parameter(ParameterSetName = "Pipeline")]
+        [Parameter(ParameterSetName = "Parameters")]
+        [object[]]
+        $InstalledPrograms,
+
         [Parameter(ParameterSetName = "Parameters", Mandatory)]
         [string]
         $Id,
-        
+
         [Parameter(ParameterSetName = "Parameters")]
         [string]
         $Version,
-        
+
         [Parameter(ParameterSetName = "Parameters")]
         [string]
         $Source,
-        
+
         [Parameter(ParameterSetName = "Parameters")]
         [string]
         $Override
@@ -41,7 +113,7 @@ function Install-WingetProgram {
                 $Program.Override = $Override
             }
             $PipelineInput = @($Program)
-        } 
+        }
         else {
             $PipelineInput = $Programs
         }
@@ -67,7 +139,7 @@ function Install-WingetProgram {
             Write-Host "Source: $Source"
             Write-Host "Override: $Override"
 
-            if ($InstalledSoftware | Where-Object ID -eq $Id) {
+            if ($InstalledPrograms | Where-Object Id -eq $Id) {
                 Write-Host "Upgrading $Id..."
 
                 $WingetArgs = @()
@@ -82,7 +154,7 @@ function Install-WingetProgram {
                     '--silent'
                 )
 
-                # Echo command for troubleshooting.
+                # Echo command text for troubleshooting.
                 Write-Host "> winget $WingetArgs"
                 if ($PSCmdlet.ShouldProcess($Id, "Upgrading")) {
                     winget @WingetArgs
@@ -115,7 +187,7 @@ function Install-WingetProgram {
                 if ($Override) {
                     $WingetArgs += '--override', $Override
                 }
-                
+
                 # Echo command for troubleshooting.
                 Write-Host "> winget $WingetArgs"
                 if ($PSCmdlet.ShouldProcess($Id, "Installing")) {
@@ -127,24 +199,3 @@ function Install-WingetProgram {
         }
     }
 }
-
-
-
-@{
-    Id       = 'Microsoft.VisualStudioCode'
-    Source   = 'winget'
-    Override = '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
-} | Install-WingetProgram -WhatIf | Format-List
-
-
-# @{
-#     Id       = 'Microsoft.VisualStudioCode'
-#     Source   = 'winget'
-#     Override = '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
-# },
-# @{
-#     Id     = 'Microsoft.WindowsTerminal'
-#     Source = 'msstore'
-# },
-# 'Microsoft.DotNet.SDK.6',
-# 'Microsoft.PowerShell' | Install-WingetProgram -WhatIf | Format-List

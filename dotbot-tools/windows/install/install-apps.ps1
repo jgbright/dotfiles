@@ -29,33 +29,31 @@ function Install-WingetPrograms {
     Write-Host "Cataloged installed programs."
 
     @(
-        'Microsoft.DotNet.SDK.6',
-        # 'Google.Chrome',
-        # 'Mozilla.Firefox',
-        # '7zip.7zip',
+        'Google.Chrome',
+        'Mozilla.Firefox',
+        '7zip.7zip',
         'AgileBits.1Password',
-        # 'Logitech.OptionsPlus',
-        # 'Greenshot.Greenshot',
-        # 'CoreyButler.NVMforWindows',
-        # 'Microsoft.VisualStudio.2022.Community',
-        # 'Microsoft.AzureCLI',
-        # 'Microsoft.VisualStudioCode',
-        # 'LINQPad.LINQPad.7',
-        # 'Fork.Fork',
-        # 'Docker.DockerDesktop',
+        'Logitech.OptionsPlus',
+        'Greenshot.Greenshot',
+        'CoreyButler.NVMforWindows',
+        'Microsoft.VisualStudio.2022.Community',
+        'Microsoft.AzureCLI',
+        'Microsoft.VisualStudioCode',
+        'LINQPad.LINQPad.7',
+        'JanDeDobbeleer.OhMyPosh'
+        'Fork.Fork',
+        'Docker.DockerDesktop',
         'Microsoft.WindowsTerminal',
-        # 'SlackTechnologies.Slack',
-        # 'dotPDNLLC.paintdotnet',
-        # 'NickeManarin.ScreenToGif',
-        # 'Microsoft.PowerToys',
+        'SlackTechnologies.Slack',
+        'dotPDNLLC.paintdotnet',
+        'NickeManarin.ScreenToGif',
+        'Microsoft.PowerToys',
         'Microsoft.PowerShell',
         # 'Microsoft.DotNet.DesktopRuntime.7',
         # 'Microsoft.DotNet.SDK.7',
-        # 'Microsoft.DotNet.SDK.6',
+        'Microsoft.DotNet.SDK.6'
         # 'WinFsp.WinFsp',
         # 'SSHFS-Win.SSHFS-Win',
-        # 'Starship.Starship',
-        'JanDeDobbeleer.OhMyPosh'
     ) | 
     ForEach-Object {
         if ($Installed | Where-Object ID -eq $_) {
