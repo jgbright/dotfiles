@@ -23,6 +23,7 @@
         glob: true
         path: bin/linux/*
     ~/.local/bin/update-dotfiles: install.sh
+    ~/.config/powershell/profile.ps1: pwsh/profile-current-user-all-hosts
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
