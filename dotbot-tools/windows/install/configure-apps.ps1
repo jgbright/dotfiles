@@ -250,6 +250,8 @@ function Disable-TaskBarTaskView {
 function Main {
     Write-Host "Configuring apps..."
 
+    Get-PSCallStack | Out-String | Write-Host
+
     Upgrade-All
 
     Configure-Path

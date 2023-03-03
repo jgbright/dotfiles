@@ -4,108 +4,10 @@ trap {
     Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)"
 }
 
+. "$PSScriptRoot\winget.ps1"
+
 # Scott Hanselman's setupmachine.bat.
 #https://gist.githubusercontent.com/shanselman/6b91a78a2db92b81dd07cb28534ee875/raw/f5db11be9d6bc312824f4d1d83a009bfacdc3d38/setupmachine.bat
-
-function Install-WingetTools {
-    if (!(Get-PackageProvider | Where-Object Name -eq NuGet)) {
-        Write-Host "Installing NuGet pwsh package provider..."
-        Get-PackageProvider NuGet -ForceBootstrap
-        Write-Host "Installed NuGet pwsh package provider."
-    }
-
-    if (!(Get-InstalledModule -Name WingetTools -ErrorAction SilentlyContinue)) {
-        Write-Host "Installing WingetTools..."
-        Install-Module WingetTools -Scope CurrentUser -Force
-        Write-Host "Installed WingetTools."
-    }
-}
-
-function Install-WingetPrograms {
-    Install-WingetTools
-
-    Write-Host "Cataloging installed programs..."
-    $Installed = Get-WGInstalled
-    Write-Host "Cataloged installed programs."
-
-    @(
-        'Google.Chrome',
-        'Mozilla.Firefox',
-        '7zip.7zip',
-        'AgileBits.1Password',
-        'Logitech.OptionsPlus',
-        'Greenshot.Greenshot',
-        'CoreyButler.NVMforWindows',
-        'Microsoft.VisualStudio.2022.Community',
-        'Microsoft.AzureCLI',
-        'Microsoft.VisualStudioCode',
-        'LINQPad.LINQPad.7',
-        'JanDeDobbeleer.OhMyPosh'
-        'Fork.Fork',
-        'Docker.DockerDesktop',
-        'Microsoft.WindowsTerminal',
-        'SlackTechnologies.Slack',
-        'dotPDNLLC.paintdotnet',
-        'NickeManarin.ScreenToGif',
-        'Microsoft.PowerToys',
-        'Microsoft.PowerShell',
-        # 'Microsoft.DotNet.DesktopRuntime.7',
-        # 'Microsoft.DotNet.SDK.7',
-        'Microsoft.DotNet.SDK.6'
-        # 'WinFsp.WinFsp',
-        # 'SSHFS-Win.SSHFS-Win',
-    ) | 
-    ForEach-Object {
-        if ($Installed | Where-Object ID -eq $_) {
-            
-            Write-Host "Upgrading $_..."
-
-            winget upgrade `
-                --id $_ `
-                --source winget `
-                --accept-package-agreements `
-                --accept-source-agreements `
-                --silent
-
-            Write-Host "Upgraded $_."
-        }
-        else {
-        
-            Write-Host "Installing $_..."
-
-            winget install `
-                --id $_ `
-                --source winget `
-                --accept-package-agreements `
-                --accept-source-agreements `
-                --silent
-
-            Write-Host "Installed $_."
-        }
-    }
-
-    # These snowflakes require special handling.
-
-    Write-Host "Installing vscode..."
-
-    winget install `
-        --id Microsoft.VisualStudioCode `
-        --source winget `
-        --accept-package-agreements `
-        --accept-source-agreements `
-        --override '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
-
-    Write-Host "Installed vscode."
-
-    winget install `
-        --id "windows terminal" `
-        --source msstore `
-        --accept-package-agreements `
-        --accept-source-agreements 
-
-}
-
-
 
 function IsNerdFontInstalled {
     try {
@@ -172,26 +74,26 @@ function Install-1PasswordCli {
 }
 
 
-function Add-AppxPackageFromUrl {
-    param(
-        [Parameter(Mandatory = $true)]
-        [Uri]$Uri,
-        [string]$Name
-    )
-    $FileNameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($Uri)
-    $Extension = [System.IO.Path]::GetExtension($Uri)
-    $TempFile = "$([System.IO.Path]::GetTempPath())/${FileNameWithoutExtension}_$([guid]::NewGuid())$Extension"
+# function Add-AppxPackageFromUrl {
+#     param(
+#         [Parameter(Mandatory = $true)]
+#         [Uri]$Uri,
+#         [string]$Name
+#     )
+#     $FileNameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($Uri)
+#     $Extension = [System.IO.Path]::GetExtension($Uri)
+#     $TempFile = "$([System.IO.Path]::GetTempPath())/${FileNameWithoutExtension}_$([guid]::NewGuid())$Extension"
     
-    Write-Host "Downloading $Name..."
-    (New-Object System.Net.WebClient).DownloadFile($Uri, $TempFile)
-    Write-Host "Downloaded $Name."
+#     Write-Host "Downloading $Name..."
+#     (New-Object System.Net.WebClient).DownloadFile($Uri, $TempFile)
+#     Write-Host "Downloaded $Name."
 
-    Write-Host "Installing $Name..."
-    Add-AppxPackage $TempFile
-    Write-Host "Installed $Name."
+#     Write-Host "Installing $Name..."
+#     Add-AppxPackage $TempFile
+#     Write-Host "Installed $Name."
 
-    Remove-Item $TempFile
-}
+#     Remove-Item $TempFile
+# }
 
 # function Install-WindowsTerminal {
 #     # Add-AppxPackageFromUrl 'https://github.com/microsoft/terminal/releases/download/v1.16.10261.0/Microsoft.WindowsTerminal_Win11_1.16.10262.0_8wekyb3d8bbwe.msixbundle'
@@ -210,10 +112,45 @@ function Add-AppxPackageFromUrl {
 function Main {
     Write-Host "Installing apps..."
 
-    Install-WingetPrograms
+    @(
+        @{
+            Id       = 'Microsoft.VisualStudioCode'
+            Source   = 'winget'
+            Override = '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
+        },
+        # @{
+        #     Id     = 'Microsoft.WindowsTerminal'
+        #     Source = 'msstore'
+        # },
+        'Microsoft.WindowsTerminal',
+        'JanDeDobbeleer.OhMyPosh',
+        'Google.Chrome',
+        'Mozilla.Firefox',
+        '7zip.7zip',
+        'Fork.Fork',
+        'Microsoft.VisualStudioCode',
+        'Microsoft.VisualStudio.2022.Community',
+        # 'Microsoft.DotNet.DesktopRuntime.7',
+        # 'Microsoft.DotNet.SDK.7',
+        'LINQPad.LINQPad.7',
+        'Microsoft.AzureCLI',
+        'CoreyButler.NVMforWindows',
+        'Docker.DockerDesktop',
+        'NickeManarin.ScreenToGif',
+        'Microsoft.PowerToys',
+        # 'WinFsp.WinFsp',
+        'SSHFS-Win.SSHFS-Win',
+        'Logitech.OptionsPlus',
+        'SlackTechnologies.Slack',
+        'AgileBits.1Password',
+        'Greenshot.Greenshot',
+        'dotPDNLLC.paintdotnet'
+        # 'Starship.Starship',
+    ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
+            
+    Install-WingetAndTools
     Install-Fonts
     Install-1PasswordCli
-    # Install-WindowsTerminal
 
     Write-Host "Installed apps."
 }

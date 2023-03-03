@@ -71,34 +71,34 @@ function Install-MicrosoftUiXaml {
     Remove-Item $TempDir -Recurse -Force
 }
 
-function Install-WindowsTerminal {
-    if (Get-AppxPackage 'Microsoft.WindowsTerminal') {
-        Write-Host "Windows Terminal is already installed."
-        return
-    }
+# function Install-WindowsTerminal {
+#     if (Get-AppxPackage 'Microsoft.WindowsTerminal') {
+#         Write-Host "Windows Terminal is already installed."
+#         return
+#     }
 
-    $PreviousProgressPreference = $ProgressPreference
-    $ProgressPreference = 'SilentlyContinue'
+#     $PreviousProgressPreference = $ProgressPreference
+#     $ProgressPreference = 'SilentlyContinue'
 
-    try {
-        Write-Host "Installing Windows Terminal..."
+#     try {
+#         Write-Host "Installing Windows Terminal..."
 
-        Add-AppxPackageFromUrl `
-            -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx `
-            -Name "Microsoft Visual C++ Redistributable (x64)"
+#         Add-AppxPackageFromUrl `
+#             -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx `
+#             -Name "Microsoft Visual C++ Redistributable (x64)"
 
-        Install-MicrosoftUiXaml
+#         Install-MicrosoftUiXaml
 
-        Add-AppxPackageFromUrl `
-            -Uri https://github.com/microsoft/terminal/releases/download/v1.16.10261.0/Microsoft.WindowsTerminal_Win11_1.16.10262.0_8wekyb3d8bbwe.msixbundle `
-            -Name "Windows Terminal"
+#         Add-AppxPackageFromUrl `
+#             -Uri https://github.com/microsoft/terminal/releases/download/v1.16.10261.0/Microsoft.WindowsTerminal_Win11_1.16.10262.0_8wekyb3d8bbwe.msixbundle `
+#             -Name "Windows Terminal"
 
-        Write-Host "Installed Windows Terminal."
-    }
-    finally {
-        $ProgressPreference = $PreviousProgressPreference
-    }
-}
+#         Write-Host "Installed Windows Terminal."
+#     }
+#     finally {
+#         $ProgressPreference = $PreviousProgressPreference
+#     }
+# }
 
 
 
@@ -183,6 +183,8 @@ function PrintHeader {
     Write-Host "SHELL: $PowershellName $PowershellVersion"
     
     Write-Host "PSCommandPath: $PSCommandPath"
+
+    Get-PSCallStack | Out-String | Write-Host
 }
 
 function Main {
@@ -230,18 +232,6 @@ function Main {
         return
     }
 
-    & $PSScriptRoot/dotbot-tools/windows/install/install-before-running-dotbot.ps1
-
-    # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
-    # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
-    # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
-
-    # if (ElevateIfNeeded) {
-    #     return
-    # }
-
-    # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Path
-    # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Name
     $IsRepoAvailable = [boolean]$PSCommandPath
     $IsRepoReallyAvailable = [boolean]$PSCommandPath -and (Test-Path $PSCommandPath)
     $IsRepoReallyReallyAvailable = `
@@ -257,21 +247,13 @@ function Main {
     Write-Host "CommandToRestartScript: $CommandToRestartScript"
     Write-Host "PSCommandPath: $PSCommandPath"
 
-
-    # Invoke-Later `
-    # -File "$PSScriptRoot/dotbot-tools/windows/install/configure-apps.ps1" `
-    # -ScheduledTask `
-    # -NextLogFileSlug 'configure-apps'
-
-    # return
-
     # For now, let's just give this script the ability to restart itself.  We'll do
     # something similar for the current user after we know we are on pwsh and not
     # powershell.
-    Set-ExecutionPolicy `
-        -ExecutionPolicy Bypass `
-        -Scope Process `
-        -Force
+    # Set-ExecutionPolicy `
+    #     -ExecutionPolicy Bypass `
+    #     -Scope Process `
+    #     -Force
 
 
     $CONFIG = ".install.windows.conf.yaml"
@@ -388,55 +370,8 @@ function Main {
                 --plugin-dir "$BASEDIR/dotbot-crossplatform" `
                 -c $CONFIG $Args
 
-            Install-WindowsTerminal
-
-            @(
-                @{
-                    Id       = 'Microsoft.VisualStudioCode'
-                    Source   = 'winget'
-                    Override = '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
-                },
-                # @{
-                #     Id     = 'Microsoft.WindowsTerminal'
-                #     Source = 'msstore'
-                # },
-                'Microsoft.WindowsTerminal',
-                'JanDeDobbeleer.OhMyPosh',
-                'Google.Chrome',
-                'Mozilla.Firefox',
-                '7zip.7zip',
-                'Fork.Fork',
-                'Microsoft.VisualStudioCode',
-                'Microsoft.VisualStudio.2022.Community',
-                # 'Microsoft.DotNet.DesktopRuntime.7',
-                # 'Microsoft.DotNet.SDK.7',
-                'LINQPad.LINQPad.7',
-                'Microsoft.AzureCLI',
-                'CoreyButler.NVMforWindows',
-                'Docker.DockerDesktop',
-                'NickeManarin.ScreenToGif',
-                'Microsoft.PowerToys',
-                # 'WinFsp.WinFsp',
-                'SSHFS-Win.SSHFS-Win',
-                'Logitech.OptionsPlus',
-                'SlackTechnologies.Slack',
-                'AgileBits.1Password',
-                'Greenshot.Greenshot',
-                'dotPDNLLC.paintdotnet'
-                # 'Starship.Starship',
-            ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
-            & $PSScriptRoot/dotbot-tools/windows/install/install-after-running-dotbot.ps1
-            & install-before-running-dotbot.ps1
-            # Run `
-            #     -File "$PSScriptRoot/dotbot-tools/windows/install/configure-apps.ps1" `
-            #     -LogSlug 'configure-apps'
-
-            # Invoke-Later `
-            #     -File "$PSScriptRoot/dotbot-tools/windows/install/configure-apps.ps1" `
-            #     -NextLogFileSlug 'configure-apps'
-            # -ScheduledTask `
-
-            Write-Host "Finished running dotbot.  Another script will launch in a few seconds to configure apps."
+            
+            Write-Host "🎉 Enjoy!"
             return
         }
     }
