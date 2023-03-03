@@ -19,6 +19,10 @@ trap {
     Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)"
 }
 
+if ($PSVersionTable.Platform -eq 'Unix') {
+    throw "On unix systems, run install.sh instead."
+}
+
 function IsAdminUser {
     $Identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $Principal = New-Object Security.Principal.WindowsPrincipal($Identity)
@@ -52,7 +56,6 @@ function Add-AppxPackageFromUrl {
 }
 
 function Install-MicrosoftUiXaml {
-
     $TempDir = New-Item -ItemType Directory -Path $env:TEMP -Name "Microsoft.UI.Xaml_$([guid]::NewGuid())" -Verbose
     $Uri = 'https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3'
 
@@ -215,7 +218,7 @@ function Main {
         Write-Host "Downloaded Run.ps1."
     }
 
-
+    $Self = $PSCommandPath
     if (!(IsAdminUser)) {
         if ($Elevated) {
             Read-Host -Prrompt "Already tried elevating privileges, but that didn't work."
@@ -223,7 +226,7 @@ function Main {
         else {
             Write-Host "Elevating privileges..."
             Run `
-                -Self $PSCommandPath `
+                -Self $Self `
                 -AsAdministrator `
                 -LogSlug elevated `
                 -Wait
@@ -311,7 +314,12 @@ function Main {
         'Git.Git',
         'Python.Python.3.11',
         'Microsoft.DotNet.SDK.6'
-    ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
+    ) | ForEach-Object {
+        @{
+            Id = $_
+            Scope = 'machine'
+        }
+    } | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
 
     # Look for a reason to restart the script.  It would be nice to avoid a restart if possible.
     $RequiredCommands = 'git', 'python', 'pwsh', 'dotnet'
@@ -346,6 +354,8 @@ function Main {
         git clone https://github.com/jgbright/dotfiles $BASEDIR
     }
 
+    $Self = "$BASEDIR\install.ps1"
+
     Write-Host "Installing local dotfiles repository in $DOTBOT_DIR..."
     git -C $DOTBOT_DIR submodule sync --quiet --recursive
     Write-Host "Installed local dotfiles repository."
@@ -358,10 +368,26 @@ function Main {
 
     Write-Host "Running dotbot..."
     foreach ($PYTHON in ('python', 'python3', 'python2')) {
+        $ErrorActionPreference = "SilentlyContinue"
+        $Version = &$PYTHON -V
+        $ErrorActionPreference = "Stop"
+
+        Write-Host "PYTHON: $PYTHON"
+        Write-Host "Version: $Version"
+        
         # Python redirects to Microsoft Store in Windows 10 when not installed
         if (& { $ErrorActionPreference = "SilentlyContinue"
                 ![string]::IsNullOrEmpty((&$PYTHON -V))
                 $ErrorActionPreference = "Stop" }) {
+                    Write-Host @"
+&$PYTHON `
+$(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
+    -d $BASEDIR `
+    @DotbotPluginArgs `
+    --plugin-dir "$BASEDIR/dotbot-conditional" `
+    --plugin-dir "$BASEDIR/dotbot-crossplatform" `
+    -c $CONFIG $Args
+"@
             &$PYTHON `
             $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
                 -d $BASEDIR `

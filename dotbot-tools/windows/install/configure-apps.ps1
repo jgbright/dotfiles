@@ -19,9 +19,20 @@ function Upgrade-All {
 
 function  Configure-Path {
     # Add ~/.local/bin to path if it's not already there.
+    $Paths = $env:PATH.Split(';')
+
+    $Paths = $Paths | Sort-Object -Unique
+
     $BinDir = "$env:USERPROFILE\.local\bin"
-    if ($env:PATH -notlike "*$BinDir*") {
-        [Environment]::SetEnvironmentVariable("PATH", "$BinDir;$env:PATH", "User")
+    if ($Paths -notcontains $BinDir) {
+        # Add to beginning of path.
+        $Paths = @($BinDir) + $Paths
+    }
+    
+    $Path = $Paths -join ';'
+
+    if ($env:PATH -ne $Path) {
+        [Environment]::SetEnvironmentVariable("PATH", $Path, "User")
     }
 }
 
@@ -187,23 +198,31 @@ function Configure-OhMyPosh {
         return
     }
     
-    @"
-    
-    # oh-my-posh
-    # Uncomment one of these presets to get started.
-    # docs: https://ohmyposh.dev/docs/installation/customize
-    
-    $(
-        (
-        Get-ChildItem `
-        -File $env:POSH_THEMES_PATH `
-        -Filter '*.omp.*' `
-        | ForEach-Object {
-                "# oh-my-posh init pwsh --config '$($_.FullName)' | Invoke-Expression"
-            }
-        ) -join "`n"
-        )
+    $PoshThemesPath = $env:POSH_THEMES_PATH -or "$home\.poshthemes"
+    if (!$env:POSH_THEMES_PATH) {
+        [Environment]::SetEnvironmentVariable("POSH_THEMES_PATH", $PoshThemesPath, "User")
+    }
+
+    Push-Location $PoshThemesPath
+
+    @"    
+# oh-my-posh
+# Uncomment one of these presets to get started.
+# docs: https://ohmyposh.dev/docs/installation/customize
+
+$(
+    (
+    Get-ChildItem `
+    -File $PoshThemesPath `
+    -Filter '*.omp.*' `
+    | ForEach-Object {
+            "# oh-my-posh init pwsh --config ""`${env:POSH_THEMES_PATH}\$((Resolve-Path -Relative $_).Substring(2))"" | Invoke-Expression"
+        }
+    ) -join "`n"
+)
 "@ | Add-Content $ConfigFile
+
+    Pop-Location
 }
 
 # function Configure-Starship {
