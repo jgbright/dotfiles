@@ -5,6 +5,10 @@
 
 # I like these the best.
 
+$IsUnix = $PSVersionTable.Platform -eq 'Unix'
+
+$BaseDir = $IsUnix ? $HOME : ${env:LOCALAPPDATA}
+
 oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\kushal.omp.json" | Invoke-Expression
 # oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\slim.omp.json" | Invoke-Expression
 # oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\clean-detailed.omp.json" | Invoke-Expression
