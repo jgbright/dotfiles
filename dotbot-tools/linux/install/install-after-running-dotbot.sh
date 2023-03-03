@@ -67,22 +67,30 @@ install_ohmyzsh() {
 }
 
 install_ohmyposh() {
-    if [ -d "${HOME}/.oh-my-zsh" ]; then
-        log "Oh My Zsh already installed."
-        return
+    if [ -d "/usr/local/bin/oh-my-posh" ]; then
+        log "Oh My Posh already installed."
+    else
+        log "Installing Oh My Posh..."
+
+        sudo wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O /usr/local/bin/oh-my-posh
+        sudo chmod +x /usr/local/bin/oh-my-posh
+
+        log "Installed Oh My Posh."
     fi
-    log "Installing Oh My Posh..."
 
-    sudo wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O /usr/local/bin/oh-my-posh
-    sudo chmod +x /usr/local/bin/oh-my-posh
+    if [ -d "$HOME/.poshthemes" ]; then
+        log "Oh My Posh themes already installed."
+    else
+        log "Installing Oh My Posh themes..."
 
-    mkdir ~/.poshthemes
-    wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip -O ~/.poshthemes/themes.zip
-    unzip ~/.poshthemes/themes.zip -d ~/.poshthemes
-    chmod u+rw ~/.poshthemes/*.omp.*
-    rm -f ~/.poshthemes/themes.zip
+        mkdir ~/.poshthemes
+        wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip -O ~/.poshthemes/themes.zip
+        unzip ~/.poshthemes/themes.zip -d ~/.poshthemes
+        chmod u+rw ~/.poshthemes/*.omp.*
+        rm -f ~/.poshthemes/themes.zip
 
-    log "Installed Oh My Posh."
+        log "Installed Oh My Posh themes."
+    fi
 
 }
 
@@ -289,7 +297,7 @@ main() {
     apt_install zsh
     apt_install xdg-utils xdg-open
     apt_install mc
-    
+
     # This is failing, so let's install using the script.
     # apt_install zoxide
 
