@@ -5,139 +5,139 @@
 
 # I like these the best.
 
-oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\kushal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\slim.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\clean-detailed.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\iterm2.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\night-owl.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\sim-web.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\slimfat.omp.json' | Invoke-Expression
+oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\kushal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\slim.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\clean-detailed.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\iterm2.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\night-owl.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\sim-web.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\slimfat.omp.json" | Invoke-Expression
 
 
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\1_shell.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\agnoster.minimal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\agnoster.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\agnosterplus.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\aliens.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\amro.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\atomic.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\atomicBit.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\avit.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\blueish.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\bubbles.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\bubblesextra.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\bubblesline.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\capr4n.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\catppuccin_frappe.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\catppuccin_latte.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\catppuccin_macchiato.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\catppuccin_mocha.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\catppuccin.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\cert.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\chips.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\cinnamon.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\clean-detailed.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\cloud-context.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\cloud-native-azure.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\cobalt2.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\craver.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\darkblood.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\devious-diamonds.omp.yaml' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\di4am0nd.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\dracula.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\easy-term.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\emodipt-extend.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\emodipt.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\fish.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\free-ukraine.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\froczh.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\glowsticks.omp.yaml' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\gmay.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\grandpa-style.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\gruvbox.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\half-life.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\honukai.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\hotstick.minimal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\hul10.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\hunk.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\huvix.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\if_tea.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\illusi0n.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\iterm2.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\jandedobbeleer.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\jblab_2021.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\jonnychipz.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\json.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\jtracey93.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\jv_sitecorian.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\kali.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\kushal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\lambda.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\lambdageneration.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\larserikfinholt.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\lightgreen.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\M365Princess.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\marcduiker.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\markbull.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\material.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\microverse-power.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\mojada.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\montys.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\mt.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\multiverse-neon.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\negligible.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\neko.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\night-owl.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\nordtron.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\nu4a.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\onehalf.minimal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\paradox.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\pararussel.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\patriksvensson.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\peru.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\pixelrobots.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\plague.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\poshmon.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\powerlevel10k_classic.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\powerlevel10k_lean.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\powerlevel10k_modern.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\powerlevel10k_rainbow.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\powerline.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\probua.minimal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\pure.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\quick-term.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\remk.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\robbyrussell.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\rudolfs-dark.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\rudolfs-light.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\sim-web.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\slim.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\slimfat.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\smoothie.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\sonicboom_dark.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\sonicboom_light.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\sorin.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\space.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\spaceship.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\star.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\stelbent-compact.minimal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\stelbent.minimal.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\takuya.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\the-unnamed.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\thecyberden.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\tiwahu.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\tokyo.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\tokyonight_storm.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\tonybaloney.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\uew.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\unicorn.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\velvet.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\wholespace.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\wopian.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\xtoys.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\ys.omp.json' | Invoke-Expression
-# oh-my-posh init pwsh --config 'C:\Users\WDAGUtilityAccount\AppData\Local\Programs\oh-my-posh\themes\zash.omp.json' | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\1_shell.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\agnoster.minimal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\agnoster.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\agnosterplus.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\aliens.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\amro.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\atomic.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\atomicBit.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\avit.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\blue-owl.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\blueish.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\bubbles.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\bubblesextra.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\bubblesline.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\capr4n.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\catppuccin_frappe.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\catppuccin_latte.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\catppuccin_macchiato.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\catppuccin_mocha.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\catppuccin.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\cert.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\chips.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\cinnamon.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\clean-detailed.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\cloud-context.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\cloud-native-azure.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\cobalt2.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\craver.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\darkblood.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\devious-diamonds.omp.yaml" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\di4am0nd.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\dracula.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\easy-term.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\emodipt-extend.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\emodipt.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\fish.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\free-ukraine.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\froczh.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\glowsticks.omp.yaml" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\gmay.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\grandpa-style.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\gruvbox.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\half-life.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\honukai.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\hotstick.minimal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\hul10.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\hunk.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\huvix.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\if_tea.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\illusi0n.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\iterm2.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\jandedobbeleer.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\jblab_2021.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\jonnychipz.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\json.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\jtracey93.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\jv_sitecorian.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\kali.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\kushal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\lambda.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\lambdageneration.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\larserikfinholt.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\lightgreen.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\M365Princess.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\marcduiker.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\markbull.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\material.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\microverse-power.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\mojada.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\montys.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\mt.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\multiverse-neon.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\negligible.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\neko.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\night-owl.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\nordtron.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\nu4a.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\onehalf.minimal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\paradox.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\pararussel.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\patriksvensson.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\peru.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\pixelrobots.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\plague.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\poshmon.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\powerlevel10k_classic.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\powerlevel10k_lean.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\powerlevel10k_modern.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\powerlevel10k_rainbow.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\powerline.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\probua.minimal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\pure.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\quick-term.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\remk.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\robbyrussell.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\rudolfs-dark.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\rudolfs-light.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\sim-web.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\slim.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\slimfat.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\smoothie.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\sonicboom_dark.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\sonicboom_light.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\sorin.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\space.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\spaceship.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\star.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\stelbent-compact.minimal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\stelbent.minimal.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\takuya.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\the-unnamed.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\thecyberden.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\tiwahu.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\tokyo.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\tokyonight_storm.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\tonybaloney.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\uew.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\unicorn.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\velvet.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\wholespace.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\wopian.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\xtoys.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\ys.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config "${env:LOCALAPPDATA}\Programs\oh-my-posh\themes\zash.omp.json" | Invoke-Expression
 
 # dotnet suggest shell start
 if (Get-Command "dotnet-suggest" -errorAction SilentlyContinue) {
@@ -161,3 +161,39 @@ else {
 
 $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.2"
 # dotnet suggest script end
+
+
+function gstart {
+    # do actual thinggstart() {
+    $initial_commit_message = "chore: empty initial commit"
+
+    git init
+    if (!$?) {
+        throw 'error'
+    }
+    git commit --allow-empty --message "$initial_commit_message"
+    if (!$?) {
+        throw 'error'
+    }
+}
+
+function gyolo {
+    $wip_commit_message = @"
+-- wip --
+
+[nocicd]
+"@
+
+    git add --all
+    if (!$?) {
+        throw 'error'
+    }
+    git commit -m "$wip_commit_message"
+    if (!$?) {
+        throw 'error'
+    }
+    git push
+    if (!$?) {
+        throw 'error'
+    }
+}
