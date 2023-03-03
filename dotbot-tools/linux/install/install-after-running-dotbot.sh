@@ -289,9 +289,11 @@ main() {
     apt_install zsh
     apt_install xdg-utils xdg-open
     apt_install mc
-    apt_install zoxide
+    
+    # This is failing, so let's install using the script.
+    # apt_install zoxide
 
-    # curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 
     install_ohmyzsh
     install_ohmyposh

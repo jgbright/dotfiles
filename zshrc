@@ -75,15 +75,6 @@ plugins=(
     git
     gitfast
     fzf-zsh-plugin
-<<<<<<< HEAD
-    fasd
-    zsh-syntax-highlighting
-    history-substring-search
-    zsh-z
-    zsh-exa
-)
-    # zsh-autosuggestions
-=======
     zsh-autosuggestions
     zsh-syntax-highlighting
     history-substring-search
@@ -93,7 +84,6 @@ plugins=(
 # We are currently using zoxide for the `z` command. z, but fasd is another good option
     # fasd
     # zsh-z
->>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 source $ZSH/oh-my-zsh.sh
 
@@ -140,8 +130,5 @@ source ~/.shell/aliases.sh
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
     eval "$(oh-my-posh init zsh --config "$HOME/.poshthemes/kushal.omp.json")"
 fi
-<<<<<<< HEAD
-=======
 
 eval "$(zoxide init zsh)"
->>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
