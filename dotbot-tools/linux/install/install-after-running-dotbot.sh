@@ -42,10 +42,6 @@ cleanup() {
 }
 
 apt_install() {
-<<<<<<< HEAD
-
-=======
->>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     package="${1}"
     command="${2:-$1}"
     if command -v "$command" &>/dev/null; then
