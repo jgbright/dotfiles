@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 if [ -z "$DOTFILES_DIR" ]; then
     echo "DOTFILES_DIR is not set." >&2
