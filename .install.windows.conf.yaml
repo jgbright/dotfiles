@@ -3,6 +3,10 @@
       create: true
       relink: true
       force: true
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
 
 - clean: ['~', '~/.config']
 
@@ -20,21 +24,10 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
-    -
-      command: pwsh -Command Write-Host "I am some output.  $(Get-Location)"
-      stdin: true
-      stdout: true
-      description: Installing applications
-    -
-      command: pwsh -File ./dotbot-tools/windows/install/install-apps.ps1
-      stdin: true
-      stdout: true
-      description: Installing applications
-    -
-      command: pwsh -File ./dotbot-tools/windows/install/configure-apps.ps1
-      stdin: true
-      stdout: true
-      description: Configuring applications
+    - [pwsh -Command Write-Host "I am some output.  $(Get-Location)", Installing applications]
+    - [pwsh -File ./dotbot-tools/windows/install/install-apps.ps1, Installing applications]
+    - [pwsh -File ./dotbot-tools/windows/install/configure-apps.ps1, Configuring applications]
+
     # -
     #   command: pwsh -File ./dotbot-tools/install-apps.ps1
     #   stdin: true
