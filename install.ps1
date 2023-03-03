@@ -522,6 +522,7 @@ function Main {
     $NeedToInstallRepo = $false
     if ($PSScriptRoot) {
         $BASEDIR = $PSScriptRoot
+        # Might be nice to warn the user if they are not installing under their user dir.
     }
     else {
         $BASEDIR = (Get-Location).Path
