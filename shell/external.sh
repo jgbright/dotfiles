@@ -12,3 +12,7 @@
 
 # # Docker
 # export DOCKER_SCAN_SUGGEST=false
+
+export DOTFILES_DIR="$HOME/.dotfiles"
+
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"

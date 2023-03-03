@@ -1,0 +1,16 @@
+<Configuration>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>..\..\..</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\.dotfiles</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+    <!--
+    <MappedFolder>
+      <HostFolder>~\.ssh</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\.ssh</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+    -->
+  </MappedFolders>
+</Configuration>

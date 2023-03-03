@@ -9,14 +9,17 @@ if [ "$(id -u)" -eq 0 ]; then
     exit 1
 fi
 
+script_name="$(basename -- "${BASH_SOURCE[0]}")"
+log_context="${script_name%.*}"
+
 log() {
     timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo "${timestamp}: ${1}"
+    echo "[${timestamp}] [${log_context}]: ${1}"
 }
 
 apt_get_update() {
     if [ -z "$(ls -A /var/lib/apt/lists)" ]; then
-        if [ "$(command -v sudo)" ]; then
+        if command -v sudo &>/dev/null; then
             log "Updating apt lists with sudo..."
             sudo apt-get update
         else
@@ -32,46 +35,26 @@ apt_remove_lists() {
     sudo rm -rf /var/lib/apt/lists/*
 }
 
-cleanup() {
-    log "Cleaning up..."
-    apt_remove_lists
-    log "Cleaned up."
-}
+apt_install() {
 
-install_sudo() {
-    if command -v sudo &>/dev/null; then
-        log "Sudo already installed."
+    package="${1}"
+    command="${2:-$1}"
+    if command -v "$command" &>/dev/null; then
+        log "Package $package is already installed."
     else
-        log "Installing sudo..."
-
         apt_get_update
-        apt-get install -y sudo
-        apt_remove_lists
-
-        log "Installed sudo."
-    fi
-}
-
-install_git() {
-    if command -v git &>/dev/null; then
-        log "Git already installed."
-    else
-        log "Installing git..."
-
-        apt_get_update
-        sudo apt-get install -y git-all
-
-        log "Installed git."
+        log "Installing $package..."
+        sudo apt-get install -y "$1" --no-install-recommends
+        log "Installed $package."
     fi
 }
 
 main() {
     log "Installing dotbot prerequisites..."
 
-    install_sudo
-    install_git
-
-    cleanup
+    apt_remove_lists
+    apt_install sudo
+    apt_install git-all git
 
     log "Installed dotbot prerequisites."
 }

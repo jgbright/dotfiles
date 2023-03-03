@@ -1,0 +1,28 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.local/bin: bin/windows
+    ~/.gitconfig: gitconfig-windows
+    ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
+    # ~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
+#     ~/.bash:
+#     ~/.bash_logout:
+#     ~/.bashrc:
+#     ~/.profile:
+#     ~/.shell:
+#     ~/.local/bin: bin
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - [pwsh -File ./dotbot-tools/windows/install/install-apps.ps1, Installing applications]
+    - [pwsh -File ./dotbot-tools/windows/install/configure-apps.ps1, Configuring applications]

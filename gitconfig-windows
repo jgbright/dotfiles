@@ -1,0 +1,31 @@
+[user]
+	email = jgbright@gmail.com
+	name = Jason Bright
+[pull]
+	rebase = true
+[core]
+	editor = code --wait
+	eol = lf
+	autocrlf = false
+[push]
+	autoSetupRemote = true
+[sequence]
+	editor = rebase-editor
+[init]
+	defaultBranch = main
+[diff]
+	tool = bc
+[difftool "bc"]
+	path = c:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+[merge]
+	tool = bc
+[mergetool "bc"]
+	path = c:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+[difftool]
+	prompt = false
+[mergetool]
+	keepBackup = false
+[alias]
+	start = !git init && git commit --allow-empty -m \"chore: empty initial commit\n\n[nocicd]\" && :
+[include]
+	path = .gitconfig-local
