@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+alias gyolo='git add --all && git commit -m "-- wip -- [nocicd]" && git push'
+=======
 # alias gyolo='git add --all && git commit -m "-- wip --  [nocicd]" && git push'
 
 gyolo() {
@@ -16,6 +19,7 @@ gstart() {
     git init && 
         git commit --allow-empty --message "$initial_commit_message"
 }
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 # # Use colors in coreutils utilities output
 # alias ls='ls --color=auto'

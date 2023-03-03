@@ -174,5 +174,8 @@ fi
 
 # Oh my posh
 eval "$(oh-my-posh init bash --config "$HOME/.poshthemes/kushal.omp.json")"
+<<<<<<< HEAD
+=======
 
 eval "$(zoxide init bash)"
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f

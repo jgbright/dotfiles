@@ -4,11 +4,17 @@ trap {
 
 
 Write-Host "PSCommandPath: $PSCommandPath"
+<<<<<<< HEAD
+Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+=======
 # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
 # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
 # if (!$PSCommandPath) {
 #     Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 # }
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 function Upgrade-All {
     winget upgrade `
@@ -250,8 +256,11 @@ function Disable-TaskBarTaskView {
 function Main {
     Write-Host "Configuring apps..."
 
+<<<<<<< HEAD
+=======
     Get-PSCallStack | Out-String | Write-Host
 
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     Upgrade-All
 
     Configure-Path

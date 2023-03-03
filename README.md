@@ -50,7 +50,11 @@ Here are the steps I follow to test in Windows.
     ```pwsh
     (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/install-remote.ps1') | Invoke-Expression
 
+<<<<<<< HEAD
+    Invoke-RestMethod "https://raw.githubusercontent.com/jgbright/dotfiles/main/install-remote.ps1?random-junk=$(Get-Random)" | Invoke-Expression
+=======
     Invoke-RestMethod https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1 | Invoke-Expression
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     ```
 
 1. Wait for the script to finish

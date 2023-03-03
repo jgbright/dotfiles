@@ -25,5 +25,3 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
     --plugin-dir "${BASEDIR}/dotbot-conditional" \
     --plugin-dir "${BASEDIR}/dotbot-crossplatform" \
     "${@}"
-
-./dotbot-tools/linux/install/install-after-running-dotbot.sh

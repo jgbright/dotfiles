@@ -3,6 +3,10 @@
       create: true
       relink: true
       force: true
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
 
 - clean: ['~', '~/.config']
 
@@ -22,3 +26,4 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
+    - [bash -File ./dotbot-tools/linux/install/install-after-running-dotbot.sh, Installing software]
