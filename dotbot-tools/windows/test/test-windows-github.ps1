@@ -10,7 +10,17 @@ Invoke-Later `
     -DisableCommandEncoding `
     -NextLogFileSlug 'install.ps1-github-first-run' `
     -RunAsAdministrator `
+<<<<<<< HEAD
     -File ([System.IO.Path]::GetFullPath("$PSScriptRoot/../../../install.ps1"))
+=======
+    -Command "Invoke-RestMethod ""https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1?random-seed=$(Get-Random)"" | Invoke-Expression"
+
+    # Invoke-RestMethod "https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1?random-seed=$(Get-Random)" | Invoke-Expression
+
+    # (New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/jgbright/dotfiles/main/install.ps1?random-seed=$(Get-Random)") | Invoke-Expression
+    
+    # -File ([System.IO.Path]::GetFullPath("$PSScriptRoot/../../../install.ps1"))
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 
 # if ($false) {

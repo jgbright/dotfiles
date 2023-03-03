@@ -14,8 +14,12 @@ if [ -f "$DOTFILES_DIR/.git/MERGE_HEAD" ]; then
 fi
 pushd "$DOTFILES_DIR" >/dev/null
 
+<<<<<<< HEAD
 git add -A
 git commit --message '--wip-- [nocicd]'
+=======
+git add -A && git commit --message '--wip--  [nocicd]'
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 git pull --rebase
 if [ -f "$DOTFILES_DIR/.git/MERGE_HEAD" ]; then
     echo "Merge conflict detected. Resolve the conflict and run this script again." >&2

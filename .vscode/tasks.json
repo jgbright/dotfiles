@@ -4,10 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
+<<<<<<< HEAD
             "label": "Windows: Test Local",
             "detail": "Install dotfiles into sandbox vm from local filesystem.",
             "type": "shell",
             "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.wsb",
+=======
+            "label": "Windows: Install from Local",
+            "detail": "Install dotfiles onto local environment from local filesystem.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.cmd",
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -15,13 +22,34 @@
             }
         },
         {
+<<<<<<< HEAD
             "label": "Windows: Test GitHub",
+=======
+            "label": "Windows: Install from GitHub",
+            "detail": "Install dotfiles onto local environment from github.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-github.cmd"
+        },
+        {
+            "label": "Windows Sandbox: Install from Local",
+            "detail": "Install dotfiles into sandbox vm from local filesystem.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.wsb",
+            "problemMatcher": []
+        },
+        {
+            "label": "Windows Sandbox: Install from GitHub",
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
             "detail": "Install dotfiles into sandbox vm from github.",
             "type": "shell",
             "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-github.wsb"
         },
         {
+<<<<<<< HEAD
             "label": "Windows: Test Manual",
+=======
+            "label": "Windows Sandbox: Open Sandbox",
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
             "detail": "Open sandbox vm with dotfiles ready to install.",
             "type": "shell",
             "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-manual.wsb"

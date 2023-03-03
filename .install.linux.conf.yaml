@@ -11,6 +11,10 @@
     ~/.bash:
     ~/.bash_logout:
     ~/.bashrc:
+<<<<<<< HEAD
+=======
+    ~/.gitconfig: gitconfig-linux
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     ~/.profile:
     ~/.shell:
     ~/.local/bin/: 

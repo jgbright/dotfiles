@@ -1,7 +1,11 @@
 <Configuration>
   <MappedFolders>
     <MappedFolder>
+<<<<<<< HEAD
       <HostFolder>C:\Users\Jason Bright\.dotfiles</HostFolder>
+=======
+      <HostFolder>..\..\..</HostFolder>
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
       <SandboxFolder>C:\Users\WDAGUtilityAccount\.dotfiles</SandboxFolder>
       <ReadOnly>false</ReadOnly>
     </MappedFolder>

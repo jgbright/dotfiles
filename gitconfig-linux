@@ -1,3 +1,15 @@
 [user]
-	name = Jason Bright
 	email = jason.bright_ext@loftorbital.com
+	name = Jason Bright
+[pull]
+	rebase = true
+[core]
+	editor = code --wait
+[push]
+	autoSetupRemote = true
+[sequence]
+	editor = rebase-editor
+[init]
+	defaultBranch = main
+[sequence]
+	editor = rebase-editor

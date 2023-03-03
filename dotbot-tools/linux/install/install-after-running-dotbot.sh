@@ -42,7 +42,10 @@ cleanup() {
 }
 
 apt_install() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     package="${1}"
     command="${2:-$1}"
     if command -v "$command" &>/dev/null; then
@@ -288,8 +291,16 @@ main() {
 
     apt_install unzip
     apt_install zsh
+<<<<<<< HEAD
     apt_install mc
     apt_install xdg-utils xdg-open
+=======
+    apt_install xdg-utils xdg-open
+    apt_install mc
+    apt_install zoxide
+
+    # curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
     install_ohmyzsh
     install_ohmyposh

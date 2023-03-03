@@ -9,7 +9,13 @@
 #>
 
 [CmdletBinding()]
+<<<<<<< HEAD
 param ()
+=======
+param (
+    [switch]$Elevated
+)
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 $ErrorActionPreference = "Stop"
 
@@ -17,6 +23,7 @@ trap {
     Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)"
 }
 
+<<<<<<< HEAD
 # Write-Host "PSCommandPath: $PSCommandPath"
 # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
 # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
@@ -174,6 +181,15 @@ function Install-WingetAndTools {
 
 }
 
+=======
+function IsAdminUser {
+    $Identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $Principal = New-Object Security.Principal.WindowsPrincipal($Identity)
+    $Principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 function Add-AppxPackageFromUrl {
     param(
@@ -187,9 +203,15 @@ function Add-AppxPackageFromUrl {
     if (!$Name) {
         $Name = $FileNameWithoutExtension
     }
+<<<<<<< HEAD
     
     Write-Host "Downloading $Name..."
     Start-BitsTransfer -Source $Uri -Destination $TempFile | Complete-BitsTransfer
+=======
+
+    Write-Host "Downloading $Name..."
+    (New-Object System.Net.WebClient).DownloadFile($Uri, $TempFile)
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     Write-Host "Downloaded $Name."
 
     Write-Host "Installing $Name..."
@@ -200,7 +222,11 @@ function Add-AppxPackageFromUrl {
 }
 
 function Install-MicrosoftUiXaml {
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     $TempDir = New-Item -ItemType Directory -Path $env:TEMP -Name "Microsoft.UI.Xaml_$([guid]::NewGuid())" -Verbose
     $Uri = 'https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3'
 
@@ -219,6 +245,7 @@ function Install-MicrosoftUiXaml {
     Remove-Item $TempDir -Recurse -Force
 }
 
+<<<<<<< HEAD
 function Install-WindowsTerminal {
     if (Get-AppxPackage 'Microsoft.WindowsTerminal') {
         Write-Host "Windows Terminal is already installed."
@@ -472,6 +499,250 @@ function Main {
         'Microsoft.DotNet.SDK.6'
     ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
 
+=======
+# function Install-WindowsTerminal {
+#     if (Get-AppxPackage 'Microsoft.WindowsTerminal') {
+#         Write-Host "Windows Terminal is already installed."
+#         return
+#     }
+
+#     $PreviousProgressPreference = $ProgressPreference
+#     $ProgressPreference = 'SilentlyContinue'
+
+#     try {
+#         Write-Host "Installing Windows Terminal..."
+
+#         Add-AppxPackageFromUrl `
+#             -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx `
+#             -Name "Microsoft Visual C++ Redistributable (x64)"
+
+#         Install-MicrosoftUiXaml
+
+#         Add-AppxPackageFromUrl `
+#             -Uri https://github.com/microsoft/terminal/releases/download/v1.16.10261.0/Microsoft.WindowsTerminal_Win11_1.16.10262.0_8wekyb3d8bbwe.msixbundle `
+#             -Name "Windows Terminal"
+
+#         Write-Host "Installed Windows Terminal."
+#     }
+#     finally {
+#         $ProgressPreference = $PreviousProgressPreference
+#     }
+# }
+
+
+
+
+# function RestartScript {
+#     [CmdletBinding()]
+#     param (
+#         [string]$NextLogFileSlug,
+#         [TimeSpan]$Delay = [TimeSpan]::FromSeconds(10)
+#     )
+
+#     Write-Host "Restarting script..."
+
+#     # $FilePath = $MyInvocation.MyCommand.Definition
+#     # $ArgumentList = $MyInvocation.UnboundArguments
+
+#     Write-Host "NextLogFileSlug: $NextLogFileSlug"
+
+#     Write-Host "PSCommandPath: $PSCommandPath"
+#     # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+#     # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+#     # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+#     # Write-Host "MyInvocation.UnboundArguments: $($MyInvocation.UnboundArguments | Out-String)"
+
+#     if ($PSCommandPath) {
+#         $Command = $PSCommandPath
+#     }
+#     else {
+#         $Command = (Get-PSCallStack)[-1].Position.Text
+#     }
+
+#     Write-Host "Command: $Command"
+
+#     Invoke-Later `
+#         -RunAsAdministrator `
+#         -ScheduledTask `
+#         -NextLogFileSlug $NextLogFileSlug `
+#         -Delay $Delay `
+#         -Command $Command
+
+#     Write-Host "Restarted script."
+# }
+
+function Configure-PwshExecutionPolicy {
+    Write-Host "Configuring pwsh..."
+
+    Set-ExecutionPolicy `
+        -ExecutionPolicy Bypass `
+        -Scope CurrentUser `
+        -Force
+
+    Write-Host "Configured pwsh."
+}
+
+function PrintHeader {
+    
+    # This is actually pretty important to note as it will change and that change will impact the script.
+
+    $Date = Get-Date -Format g
+    $PowershellVersion = $PSVersionTable.PSVersion
+    if ($PSVersionTable.PSEdition -eq 'Core') {
+        $PowershellName = 'pwsh'
+    }
+    else {
+        $PowershellName = 'PowerShell'
+    }
+    
+    if ([Environment]::OSVersion.Platform -eq 'Unix') {
+        $OperatingSystem = $(lsb_release -sd)
+    }
+    else {
+        $OperatingSystem = (Get-WmiObject -class Win32_OperatingSystem).Caption
+    }
+    
+    $MachineName = [Environment]::MachineName
+    $UserName = [Environment]::UserName
+    
+    Write-Host "Installing jgbright/dotfiles..."
+    Write-Host "DATE: $Date"
+    Write-Host "USER@HOST: $UserName@$MachineName"
+    Write-Host "OS: $OperatingSystem"
+    Write-Host "SHELL: $PowershellName $PowershellVersion"
+    
+    Write-Host "PSCommandPath: $PSCommandPath"
+
+    Get-PSCallStack | Out-String | Write-Host
+}
+
+function Main {
+    
+    PrintHeader
+    
+    # if ($IsRepoAvailable) {
+    #     Write-Host "Importing Invoke-Later.ps1..."
+    #     . "$PSScriptRoot/dotbot-tools/windows/Invoke-Later.ps1"
+    #     Write-Host "Imported Invoke-Later.ps1."
+    # }
+    # else {
+    #     Write-Host "Downloading Invoke-Later.ps1..."
+    #         (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Invoke-Later.ps1') | Invoke-Expression
+    #     Write-Host "Downloaded Invoke-Later.ps1."
+    # }
+
+    if ($PSCommandPath) {
+        Write-Host "Importing Run.ps1..."
+        . "$PSScriptRoot/dotbot-tools/windows/Run.ps1"
+        . "$PSScriptRoot/dotbot-tools/windows/install/winget.ps1"
+        Write-Host "Imported Run.ps1."
+    }
+    else {
+        Write-Host "Downloading Run.ps1..."
+        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Run.ps1') | Invoke-Expression
+        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/install/winget.ps1') | Invoke-Expression
+        Write-Host "Downloaded Run.ps1."
+    }
+
+
+    if (!(IsAdminUser)) {
+        if ($Elevated) {
+            Read-Host -Prrompt "Already tried elevating privileges, but that didn't work."
+        }
+        else {
+            Write-Host "Elevating privileges..."
+            Run `
+                -Self $PSCommandPath `
+                -AsAdministrator `
+                -LogSlug elevated `
+                -Wait
+        }
+        
+        return
+    }
+
+    $IsRepoAvailable = [boolean]$PSCommandPath
+    $IsRepoReallyAvailable = [boolean]$PSCommandPath -and (Test-Path $PSCommandPath)
+    $IsRepoReallyReallyAvailable = `
+        [boolean]$PSCommandPath `
+        -and (Test-Path $PSCommandPath) `
+        -and (Test-Path "$([System.IO.Path]::GetDirectoryName($PSCommandPath))\.dotbot\bin\dotbot")
+
+    $CommandToRestartScript = if ($PSCommandPath) { $PSCommandPath } else { (Get-PSCallStack)[-1].Position.Text }
+
+    Write-Host "IsRepoAvailable: $IsRepoAvailable"
+    Write-Host "IsRepoReallyAvailable: $IsRepoReallyAvailable"
+    Write-Host "IsRepoReallyReallyAvailable: $IsRepoReallyReallyAvailable"
+    Write-Host "CommandToRestartScript: $CommandToRestartScript"
+    Write-Host "PSCommandPath: $PSCommandPath"
+
+    # For now, let's just give this script the ability to restart itself.  We'll do
+    # something similar for the current user after we know we are on pwsh and not
+    # powershell.
+    # Set-ExecutionPolicy `
+    #     -ExecutionPolicy Bypass `
+    #     -Scope Process `
+    #     -Force
+
+
+    $CONFIG = ".install.windows.conf.yaml"
+    $DOTBOT_DIR = ".dotbot"
+
+    $DOTBOT_BIN = "bin\dotbot"
+
+    $BASEDIR = ""
+    $NeedToInstallRepo = $false
+    if ($PSScriptRoot) {
+        $BASEDIR = $PSScriptRoot
+        # Might be nice to warn the user if they are not installing under their user dir.
+    }
+    else {
+        $BASEDIR = (Get-Location).Path
+        $NeedToInstallRepo = $true
+    }
+
+    Write-Host "BaseDir: $BASEDIR"
+
+    # If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    #     Write-Host "Restarting as administrator..."
+    #     $pwsh = 'pwsh', 'powershell' | % { Get-Command $_ -ErrorAction SilentlyContinue } | Select-Object -First 1 | Select-Object -ExpandProperty Path
+
+    #     RestartScript `
+    #         -NextLogFileSlug 'elevate-to-administrator'
+
+    #     # if ($PSVersionTable.PSEdition -eq 'Core') {
+    #     #     $pwsh = 'pwsh.exe'
+    #     # } else {
+    #     #     $pwsh = 'powershell.exe'
+    #     # }
+    #     # Write-Host "MyInvocation.MyCommand.Path: $($MyInvocation.MyCommand.Path)"
+    #     # write-Host "PSCommandPath: $PSCommandPath"
+    #     # Write-Host "pwsh: $pwsh"
+    #     # Read-Host "Press enter to continue..."
+    #     # Start-Process `
+    #     #     -FilePath $pwsh `
+    #     #     -ArgumentList "-File ""$PSCommandPath""" `
+    #     #     -Verb RunAs
+    #     return
+    # }
+
+    Set-Location $BASEDIR
+
+    Write-Host "Installing prerequisites..."
+
+    Install-WingetAndTools
+
+    # Install software that will be used or configured later.  In particular,
+    # these are programs known to require a new process before you can start
+    # using them.
+    @(
+        'Microsoft.PowerShell',
+        'Git.Git',
+        'Python.Python.3.11',
+        'Microsoft.DotNet.SDK.6'
+    ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
+
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     # Look for a reason to restart the script.  It would be nice to avoid a restart if possible.
     $RequiredCommands = 'git', 'python', 'pwsh', 'dotnet'
     $MissingCommands = $RequiredCommands | Where-Object { !(Get-Command $_ -ErrorAction SilentlyContinue) }
@@ -484,7 +755,16 @@ function Main {
             Write-Host "We're running PowerShell instead of pwsh."
         }
         Write-Host "Restarting script..."
+<<<<<<< HEAD
         RestartScript -ScheduledTask -NextLogFileSlug 'install.ps1-after-installing-core-tools'
+=======
+        # RestartScript -NextLogFileSlug 
+        Run `
+            -Self $PSCommandPath `
+            -AsAdministrator `
+            -LogSlug 'install.ps1-after-installing-core-tools' `
+            -Wait
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
         Write-Host "Restarted script."
         return
     }
@@ -495,6 +775,14 @@ function Main {
 
     Write-Host "Finished installing prerequisites."
 
+<<<<<<< HEAD
+=======
+    if ($NeedToInstallRepo) {
+        Write-Host "Installing dotfiles repository..."
+        git clone https://github.com/jgbright/dotfiles $BASEDIR
+    }
+
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     Write-Host "Installing local dotfiles repository in $DOTBOT_DIR..."
     git -C $DOTBOT_DIR submodule sync --quiet --recursive
     Write-Host "Installed local dotfiles repository."
@@ -519,6 +807,7 @@ function Main {
                 --plugin-dir "$BASEDIR/dotbot-crossplatform" `
                 -c $CONFIG $Args
 
+<<<<<<< HEAD
             Install-WindowsTerminal
 
             @(
@@ -563,6 +852,10 @@ function Main {
                 -NextLogFileSlug 'configure-apps'
 
             Write-Host "Finished running dotbot.  Another script will launch in a few seconds to configure apps."
+=======
+            
+            Write-Host "🎉 Enjoy!"
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
             return
         }
     }
@@ -570,6 +863,18 @@ function Main {
     Write-Error "Error: Cannot find Python."
 }
 
+<<<<<<< HEAD
 Main
 
 Read-Host "Press any key to exit..."
+=======
+# These need to be top-level in this file, because the context will change.
+
+# Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+# Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+# Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+
+Main
+
+# Read-Host "Press any key to exit..."
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f

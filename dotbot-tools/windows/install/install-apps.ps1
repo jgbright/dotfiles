@@ -4,6 +4,7 @@ trap {
     Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)"
 }
 
+<<<<<<< HEAD
 # Scott Hanselman's setupmachine.bat.
 #https://gist.githubusercontent.com/shanselman/6b91a78a2db92b81dd07cb28534ee875/raw/f5db11be9d6bc312824f4d1d83a009bfacdc3d38/setupmachine.bat
 
@@ -109,6 +110,13 @@ function Install-WingetPrograms {
 
 
 
+=======
+. "$PSScriptRoot\winget.ps1"
+
+# Scott Hanselman's setupmachine.bat.
+#https://gist.githubusercontent.com/shanselman/6b91a78a2db92b81dd07cb28534ee875/raw/f5db11be9d6bc312824f4d1d83a009bfacdc3d38/setupmachine.bat
+
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 function IsNerdFontInstalled {
     try {
         # Add-Type -AssemblyName System.Drawing
@@ -174,6 +182,7 @@ function Install-1PasswordCli {
 }
 
 
+<<<<<<< HEAD
 function Add-AppxPackageFromUrl {
     param(
         [Parameter(Mandatory = $true)]
@@ -194,6 +203,28 @@ function Add-AppxPackageFromUrl {
 
     Remove-Item $TempFile
 }
+=======
+# function Add-AppxPackageFromUrl {
+#     param(
+#         [Parameter(Mandatory = $true)]
+#         [Uri]$Uri,
+#         [string]$Name
+#     )
+#     $FileNameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($Uri)
+#     $Extension = [System.IO.Path]::GetExtension($Uri)
+#     $TempFile = "$([System.IO.Path]::GetTempPath())/${FileNameWithoutExtension}_$([guid]::NewGuid())$Extension"
+    
+#     Write-Host "Downloading $Name..."
+#     (New-Object System.Net.WebClient).DownloadFile($Uri, $TempFile)
+#     Write-Host "Downloaded $Name."
+
+#     Write-Host "Installing $Name..."
+#     Add-AppxPackage $TempFile
+#     Write-Host "Installed $Name."
+
+#     Remove-Item $TempFile
+# }
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 # function Install-WindowsTerminal {
 #     # Add-AppxPackageFromUrl 'https://github.com/microsoft/terminal/releases/download/v1.16.10261.0/Microsoft.WindowsTerminal_Win11_1.16.10262.0_8wekyb3d8bbwe.msixbundle'
@@ -212,10 +243,52 @@ function Add-AppxPackageFromUrl {
 function Main {
     Write-Host "Installing apps..."
 
+<<<<<<< HEAD
     Install-WingetPrograms
     Install-Fonts
     Install-1PasswordCli
     # Install-WindowsTerminal
+=======
+    @(
+        @{
+            Id       = 'Microsoft.VisualStudioCode'
+            Source   = 'winget'
+            Override = '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
+        },
+        # @{
+        #     Id     = 'Microsoft.WindowsTerminal'
+        #     Source = 'msstore'
+        # },
+        'Microsoft.WindowsTerminal',
+        'JanDeDobbeleer.OhMyPosh',
+        'Google.Chrome',
+        'Mozilla.Firefox',
+        '7zip.7zip',
+        'Fork.Fork',
+        'Microsoft.VisualStudioCode',
+        'Microsoft.VisualStudio.2022.Community',
+        # 'Microsoft.DotNet.DesktopRuntime.7',
+        # 'Microsoft.DotNet.SDK.7',
+        'LINQPad.LINQPad.7',
+        'Microsoft.AzureCLI',
+        'CoreyButler.NVMforWindows',
+        'Docker.DockerDesktop',
+        'NickeManarin.ScreenToGif',
+        'Microsoft.PowerToys',
+        # 'WinFsp.WinFsp',
+        'SSHFS-Win.SSHFS-Win',
+        'Logitech.OptionsPlus',
+        'SlackTechnologies.Slack',
+        'AgileBits.1Password',
+        'Greenshot.Greenshot',
+        'dotPDNLLC.paintdotnet'
+        # 'Starship.Starship',
+    ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
+            
+    Install-WingetAndTools
+    Install-Fonts
+    Install-1PasswordCli
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
     Write-Host "Installed apps."
 }

@@ -3,12 +3,24 @@
       create: true
       relink: true
       force: true
+<<<<<<< HEAD
+=======
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 - clean: ['~', '~/.config']
 
 - link:
     ~/.local/bin: bin/windows
+<<<<<<< HEAD
     # ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
+=======
+    ~/.gitconfig: gitconfig-windows
+    ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     # ~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
 #     ~/.bash:
 #     ~/.bash_logout:
@@ -19,6 +31,7 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
+<<<<<<< HEAD
     -
       command: pwsh -Command Write-Host "I am some output."
       stdin: true
@@ -57,3 +70,8 @@
 #     then:
 #         shell:
 #         - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+=======
+    - [pwsh -Command Write-Host "I am some output.  $(Get-Location)", Installing applications]
+    - [pwsh -File ./dotbot-tools/windows/install/install-apps.ps1, Installing applications]
+    - [pwsh -File ./dotbot-tools/windows/install/configure-apps.ps1, Configuring applications]
+>>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
