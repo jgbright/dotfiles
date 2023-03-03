@@ -4,17 +4,11 @@ trap {
 
 
 Write-Host "PSCommandPath: $PSCommandPath"
-<<<<<<< HEAD
-Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
-Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
-Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
-=======
 # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
 # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
 # if (!$PSCommandPath) {
 #     Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 # }
->>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
 
 function Upgrade-All {
     winget upgrade `
@@ -25,9 +19,20 @@ function Upgrade-All {
 
 function  Configure-Path {
     # Add ~/.local/bin to path if it's not already there.
+    $Paths = $env:PATH.Split(';')
+
+    $Paths = $Paths | Sort-Object -Unique
+
     $BinDir = "$env:USERPROFILE\.local\bin"
-    if ($env:PATH -notlike "*$BinDir*") {
-        [Environment]::SetEnvironmentVariable("PATH", "$BinDir;$env:PATH", "User")
+    if ($Paths -notcontains $BinDir) {
+        # Add to beginning of path.
+        $Paths = @($BinDir) + $Paths
+    }
+    
+    $Path = $Paths -join ';'
+
+    if ($env:PATH -ne $Path) {
+        [Environment]::SetEnvironmentVariable("PATH", $Path, "User")
     }
 }
 
@@ -193,23 +198,30 @@ function Configure-OhMyPosh {
         return
     }
     
-    @"
-    
-    # oh-my-posh
-    # Uncomment one of these presets to get started.
-    # docs: https://ohmyposh.dev/docs/installation/customize
-    
-    $(
-        (
-        Get-ChildItem `
-        -File $env:POSH_THEMES_PATH `
-        -Filter '*.omp.*' `
-        | ForEach-Object {
-                "# oh-my-posh init pwsh --config '$($_.FullName)' | Invoke-Expression"
-            }
-        ) -join "`n"
-        )
+    if (!$env:POSH_THEMES_PATH) {
+        [Environment]::SetEnvironmentVariable("POSH_THEMES_PATH", "$home\.poshthemes", "User")
+    }
+
+    Push-Location ${env:POSH_THEMES_PATH}
+
+    @"    
+# oh-my-posh
+# Uncomment one of these presets to get started.
+# docs: https://ohmyposh.dev/docs/installation/customize
+
+$(
+    (
+    Get-ChildItem `
+    -File ${env:POSH_THEMES_PATH} `
+    -Filter '*.omp.*' `
+    | ForEach-Object {
+            "# oh-my-posh init pwsh --config ""`${env:POSH_THEMES_PATH}\$((Resolve-Path -Relative $_).Substring(2))"" | Invoke-Expression"
+        }
+    ) -join "`n"
+)
 "@ | Add-Content $ConfigFile
+
+    Pop-Location
 }
 
 # function Configure-Starship {
@@ -256,11 +268,8 @@ function Disable-TaskBarTaskView {
 function Main {
     Write-Host "Configuring apps..."
 
-<<<<<<< HEAD
-=======
     Get-PSCallStack | Out-String | Write-Host
 
->>>>>>> 612f5670e113a023876d445c9bdeec103333ba2f
     Upgrade-All
 
     Configure-Path
