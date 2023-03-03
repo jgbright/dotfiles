@@ -26,4 +26,4 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
-    - [bash -File ./dotbot-tools/linux/install/install-after-running-dotbot.sh, Installing software]
+    - [bash ./dotbot-tools/linux/install/install-after-running-dotbot.sh, Installing software]
