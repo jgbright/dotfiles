@@ -34,66 +34,13 @@ function GetPwshCommandName {
     return Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
 }
 
-function ElevateIfNeeded {
-    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    $IsAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
-    If ($IsAdmin) {
-        return $false
-    }
-
-    Write-Host "Not an admin."
-
-    if ($Elevated) {
-        Write-Host "We already attempted to elevate the process once, so I guess we can't..."
-        return $true
-    }
-
-    if ($PSCommandPath) {
-        $ArgumentList = "-File ""$PSCommandPath"""
-    }
-    else {
-        $OriginalCommand = (Get-PSCallStack)[-1].Position.Text
-        $Command = "& { $OriginalCommand } -Elevated"
-        $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
-        $EncodedCommand = [Convert]::ToBase64String($Bytes)
-        Write-Host "EncodedCommand: $EncodedCommand"
-        write-Host "OriginalCommand: $OriginalCommand"
-        $ArgumentList = "-EncodedCommand $EncodedCommand"
-    }
-
-
-    # BEGN 
-
-    
-    # $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
-
-    # $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-    # if ($PwshExe) {
-    #     $PwshCommandName = $PwshExe
-    # }
-
-    # if (Test-Path $PwshPathCandidate) {
-    #     $PwshCommandName =  $PwshPathCandidate
-    # }
-
-    # $PwshCommandName = Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-
-    $PwshCommandName = GetPwshCommandName
-    # END
-
-    $StartProcessArgs = @{
-        FilePath     = $PwshCommandName
-        ArgumentList = $ArgumentList
-        Verb         = 'RunAs'
-        # Wait         = $true
-    }
-    
-    Write-Host "Start-Process $StartProcessArgs"
-    $StartProcessArgs | ConvertTo-Json -Depth 99 | Write-Host 
-    Start-Process @StartProcessArgs
-    return $true
+function IsAdminUser {
+    $Identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $Principal = New-Object Security.Principal.WindowsPrincipal($Identity)
+    $Principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
+
+
 
 
 
@@ -181,7 +128,7 @@ function Add-AppxPackageFromUrl {
     }
 
     Write-Host "Downloading $Name..."
-    Start-BitsTransfer -Source $Uri -Destination $TempFile | Complete-BitsTransfer
+    (New-Object System.Net.WebClient).DownloadFile($Uri, $TempFile)
     Write-Host "Downloaded $Name."
 
     Write-Host "Installing $Name..."
@@ -373,44 +320,44 @@ function Install-WingetProgram {
 
 
 
-function RestartScript {
-    [CmdletBinding()]
-    param (
-        [string]$NextLogFileSlug,
-        [TimeSpan]$Delay = [TimeSpan]::FromSeconds(10)
-    )
+# function RestartScript {
+#     [CmdletBinding()]
+#     param (
+#         [string]$NextLogFileSlug,
+#         [TimeSpan]$Delay = [TimeSpan]::FromSeconds(10)
+#     )
 
-    Write-Host "Restarting script..."
+#     Write-Host "Restarting script..."
 
-    # $FilePath = $MyInvocation.MyCommand.Definition
-    # $ArgumentList = $MyInvocation.UnboundArguments
+#     # $FilePath = $MyInvocation.MyCommand.Definition
+#     # $ArgumentList = $MyInvocation.UnboundArguments
 
-    Write-Host "NextLogFileSlug: $NextLogFileSlug"
+#     Write-Host "NextLogFileSlug: $NextLogFileSlug"
 
-    Write-Host "PSCommandPath: $PSCommandPath"
-    # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
-    # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
-    # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
-    # Write-Host "MyInvocation.UnboundArguments: $($MyInvocation.UnboundArguments | Out-String)"
+#     Write-Host "PSCommandPath: $PSCommandPath"
+#     # Write-Host "MyInvocation: $($MyInvocation | Format-List | Out-String)"
+#     # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
+#     # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
+#     # Write-Host "MyInvocation.UnboundArguments: $($MyInvocation.UnboundArguments | Out-String)"
 
-    if ($PSCommandPath) {
-        $Command = $PSCommandPath
-    }
-    else {
-        $Command = (Get-PSCallStack)[-1].Position.Text
-    }
+#     if ($PSCommandPath) {
+#         $Command = $PSCommandPath
+#     }
+#     else {
+#         $Command = (Get-PSCallStack)[-1].Position.Text
+#     }
 
-    Write-Host "Command: $Command"
+#     Write-Host "Command: $Command"
 
-    Invoke-Later `
-        -RunAsAdministrator `
-        -ScheduledTask `
-        -NextLogFileSlug $NextLogFileSlug `
-        -Delay $Delay `
-        -Command $Command
+#     Invoke-Later `
+#         -RunAsAdministrator `
+#         -ScheduledTask `
+#         -NextLogFileSlug $NextLogFileSlug `
+#         -Delay $Delay `
+#         -Command $Command
 
-    Write-Host "Restarted script."
-}
+#     Write-Host "Restarted script."
+# }
 
 function Configure-PwshExecutionPolicy {
     Write-Host "Configuring pwsh..."
@@ -423,9 +370,8 @@ function Configure-PwshExecutionPolicy {
     Write-Host "Configured pwsh."
 }
 
-function Main {
-
-
+function PrintHeader {
+    
     # This is actually pretty important to note as it will change and that change will impact the script.
 
     $Date = Get-Date -Format g
@@ -436,24 +382,68 @@ function Main {
     else {
         $PowershellName = 'PowerShell'
     }
-
+    
     if ([Environment]::OSVersion.Platform -eq 'Unix') {
         $OperatingSystem = $(lsb_release -sd)
     }
     else {
         $OperatingSystem = (Get-WmiObject -class Win32_OperatingSystem).Caption
     }
-
+    
     $MachineName = [Environment]::MachineName
     $UserName = [Environment]::UserName
-
+    
     Write-Host "Installing jgbright/dotfiles..."
     Write-Host "DATE: $Date"
     Write-Host "USER@HOST: $UserName@$MachineName"
     Write-Host "OS: $OperatingSystem"
     Write-Host "SHELL: $PowershellName $PowershellVersion"
-
+    
     Write-Host "PSCommandPath: $PSCommandPath"
+}
+
+function Main {
+    
+    PrintHeader
+    
+    # if ($IsRepoAvailable) {
+    #     Write-Host "Importing Invoke-Later.ps1..."
+    #     . "$PSScriptRoot/dotbot-tools/windows/Invoke-Later.ps1"
+    #     Write-Host "Imported Invoke-Later.ps1."
+    # }
+    # else {
+    #     Write-Host "Downloading Invoke-Later.ps1..."
+    #         (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Invoke-Later.ps1') | Invoke-Expression
+    #     Write-Host "Downloaded Invoke-Later.ps1."
+    # }
+
+    if ($PSCommandPath) {
+        Write-Host "Importing Run.ps1..."
+        . "$PSScriptRoot/dotbot-tools/windows/Run.ps1"
+        Write-Host "Imported Run.ps1."
+    }
+    else {
+        Write-Host "Downloading Run.ps1..."
+        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Run.ps1') | Invoke-Expression
+        Write-Host "Downloaded Run.ps1."
+    }
+
+
+    if (!(IsAdminUser)) {
+        if ($Elevated) {
+            Read-Host -Prrompt "Already tried elevating privileges, but that didn't work."
+        }
+        else {
+            Write-Host "Elevating privileges..."
+            Run `
+                -Self $PSCommandPath `
+                -AsAdministrator `
+                -LogSlug elevated `
+                -Wait
+        }
+        
+        return
+    }
 
     if ($Elevated) {
         Write-Host "Elevated: $Elevated"
@@ -464,18 +454,18 @@ function Main {
     # Write-Host "MyInvocation.MyCommand: $($MyInvocation.MyCommand | Format-List | Out-String)"
     # Write-Host "MyInvocation.MyCommand.Definition: $($MyInvocation.MyCommand.Definition)"
 
-    if (ElevateIfNeeded) {
-        return
-    }
+    # if (ElevateIfNeeded) {
+    #     return
+    # }
 
     # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Path
     # $IsRepoAvailable = [boolean]$MyInvocation.MyCommand.Name
     $IsRepoAvailable = [boolean]$PSCommandPath
     $IsRepoReallyAvailable = [boolean]$PSCommandPath -and (Test-Path $PSCommandPath)
     $IsRepoReallyReallyAvailable = `
-        [boolean]$PSCommandPath -and `
-    (Test-Path $PSCommandPath) -and `
-    (Test-Path "$([System.IO.Path]::GetDirectoryName($PSCommandPath))\dotbot-tools\windows\Invoke-Later.ps1")
+        [boolean]$PSCommandPath `
+        -and (Test-Path $PSCommandPath) `
+        -and (Test-Path "$([System.IO.Path]::GetDirectoryName($PSCommandPath))\.dotbot\bin\dotbot")
 
     $CommandToRestartScript = if ($PSCommandPath) { $PSCommandPath } else { (Get-PSCallStack)[-1].Position.Text }
 
@@ -484,17 +474,6 @@ function Main {
     Write-Host "IsRepoReallyReallyAvailable: $IsRepoReallyReallyAvailable"
     Write-Host "CommandToRestartScript: $CommandToRestartScript"
     Write-Host "PSCommandPath: $PSCommandPath"
-
-    if ($IsRepoAvailable) {
-        Write-Host "Importing Invoke-Later.ps1..."
-        . "$PSScriptRoot/dotbot-tools/windows/Invoke-Later.ps1"
-        Write-Host "Imported Invoke-Later.ps1."
-    }
-    else {
-        Write-Host "Downloading Invoke-Later.ps1..."
-        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Invoke-Later.ps1') | Invoke-Expression
-        Write-Host "Downloaded Invoke-Later.ps1."
-    }
 
 
     # Invoke-Later `
@@ -554,8 +533,6 @@ function Main {
     #     return
     # }
 
-    Get-Service bits | Start-Service
-
     Set-Location $BASEDIR
 
     Write-Host "Installing prerequisites..."
@@ -584,7 +561,12 @@ function Main {
             Write-Host "We're running PowerShell instead of pwsh."
         }
         Write-Host "Restarting script..."
-        RestartScript -NextLogFileSlug 'install.ps1-after-installing-core-tools'
+        # RestartScript -NextLogFileSlug 
+        Run `
+            -Self $PSCommandPath `
+            -AsAdministrator `
+            -LogSlug 'install.ps1-after-installing-core-tools' `
+            -Wait
         Write-Host "Restarted script."
         return
     }
@@ -662,10 +644,14 @@ function Main {
                 # 'Starship.Starship',
             ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
 
-            Invoke-Later `
+            Run `
                 -File "$PSScriptRoot/dotbot-tools/windows/install/configure-apps.ps1" `
-                -ScheduledTask `
-                -NextLogFileSlug 'configure-apps'
+                -LogSlug 'configure-apps'
+
+            # Invoke-Later `
+            #     -File "$PSScriptRoot/dotbot-tools/windows/install/configure-apps.ps1" `
+            #     -NextLogFileSlug 'configure-apps'
+            # -ScheduledTask `
 
             Write-Host "Finished running dotbot.  Another script will launch in a few seconds to configure apps."
             return
@@ -683,4 +669,4 @@ function Main {
 
 Main
 
-Read-Host "Press any key to exit..."
+# Read-Host "Press any key to exit..."

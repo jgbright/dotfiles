@@ -185,7 +185,7 @@ function Add-AppxPackageFromUrl {
     $TempFile = "$([System.IO.Path]::GetTempPath())/${FileNameWithoutExtension}_$([guid]::NewGuid())$Extension"
     
     Write-Host "Downloading $Name..."
-    Start-BitsTransfer -Source $Uri -Destination $TempFile | Complete-BitsTransfer
+    (New-Object System.Net.WebClient).DownloadFile($Uri, $TempFile)
     Write-Host "Downloaded $Name."
 
     Write-Host "Installing $Name..."

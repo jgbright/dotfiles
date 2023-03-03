@@ -4,10 +4,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Windows: Test Local",
-            "detail": "Install dotfiles into sandbox vm from local filesystem.",
+            "label": "Windows: Install from Local",
+            "detail": "Install dotfiles onto local environment from local filesystem.",
             "type": "shell",
-            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.wsb",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.cmd",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -15,13 +15,26 @@
             }
         },
         {
-            "label": "Windows: Test GitHub",
+            "label": "Windows: Install from GitHub",
+            "detail": "Install dotfiles onto local environment from github.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-github.cmd"
+        },
+        {
+            "label": "Windows Sandbox: Install from Local",
+            "detail": "Install dotfiles into sandbox vm from local filesystem.",
+            "type": "shell",
+            "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.wsb",
+            "problemMatcher": []
+        },
+        {
+            "label": "Windows Sandbox: Install from GitHub",
             "detail": "Install dotfiles into sandbox vm from github.",
             "type": "shell",
             "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-github.wsb"
         },
         {
-            "label": "Windows: Test Manual",
+            "label": "Windows Sandbox: Open Sandbox",
             "detail": "Open sandbox vm with dotfiles ready to install.",
             "type": "shell",
             "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-manual.wsb"

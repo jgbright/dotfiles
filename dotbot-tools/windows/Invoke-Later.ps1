@@ -44,6 +44,43 @@ $TaskNameCounter = 1
 
 $LogFileCount = 0
 
+function Get-PwshCommandWithLog {
+    [CmdletBinding()]
+    param (
+        [Parameter(ParameterSetName = 'File', Mandatory = $true)]
+        [string]
+        $File,
+
+        [Parameter(ParameterSetName = 'Command', Mandatory = $true)]
+        [string]
+        $Command,
+
+        [string]$OutBaseName,
+        [datetime]$DateTime
+    )
+
+    $Suffix = ""
+    if (!$DisableLogging) {
+        $LogFileCount++
+        $Timestamp = $DateTime.ToString("yyyy-MM-dd_HH-mm-ss-FFF")
+        $Slug = $NextLogFileSlug
+        if (!$Slug) {
+            $Slug = $TaskName | Cleanse-Filename
+        }
+        # $Suffix = " *>> ""$([System.io.path]::GetFullPath("$PSScriptRoot/../logs/$Timestamp.$Slug.log"))"""
+        $Suffix = " *>&1 | Tee-Object ""$([System.io.path]::GetFullPath("$PSScriptRoot/../../logs/$Timestamp.$Slug.log"))"""
+    }
+
+    if ($PsCmdlet.ParameterSetName -eq 'File') {
+        $Command = "& '$File'$Suffix"
+    }
+    else {
+        $Command = "& {`n$Command`n}$Suffix"
+    }
+
+    $Command
+}
+
 function Invoke-Later {
     [CmdletBinding()]
     param (
@@ -66,9 +103,7 @@ function Invoke-Later {
         [string]$Description = ""
     )
 
-    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    $IsAdministrator = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-    Write-Host "[Invoke-Later] IsAdministrator: $IsAdministrator"
+    $ScheduledTask = $false
 
     if ($PSCmdlet.ParameterSetName -eq 'File') {
         Write-Host "[Invoke-Later] File: $File"
@@ -85,20 +120,20 @@ function Invoke-Later {
     Write-Host "[Invoke-Later] Description: $Description"
 
     if (!$PwshCommandName) {
-        # $PwshCommandName = Get-PwshCommandName
+        $PwshCommandName = Get-PwshCommandName
 
-        $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
+        # $PwshPathCandidate = 'C:/Program Files/PowerShell/7/pwsh.exe'
 
-        $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-        if ($PwshExe) {
-            return $PwshExe
-        }
+        # $PwshExe = Get-Command pwsh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+        # if ($PwshExe) {
+        #     return $PwshExe
+        # }
 
-        if (Test-Path $PwshPathCandidate) {
-            return $PwshPathCandidate
-        }
+        # if (Test-Path $PwshPathCandidate) {
+        #     return $PwshPathCandidate
+        # }
 
-        $PwshCommandName = Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+        # $PwshCommandName = Get-Command Powershell -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
     }
 
     if (!$TaskName) {
@@ -214,10 +249,20 @@ $(Get-PSCallStack | Format-Table -AutoSize | Out-String)
         else {
             $StartProcessArgs['NoNewWindow'] = $true
         }
+
+        Write-Host @"
+        Start-Process `
+            -FilePath '$PwshCommandName' `
+            -ArgumentList "-ExecutionPolicy Bypass '$FileOrCommand'" `
+            -Wait `
+            -Verb RunAs `
+            $($StartProcessArgs | ConvertTo-Json -Depth 99)
+"@
         Start-Process `
             -FilePath $PwshCommandName `
             -ArgumentList "-ExecutionPolicy Bypass $FileOrCommand" `
             -Wait `
+            -Verb RunAs `
             @StartProcessArgs
     }
 
