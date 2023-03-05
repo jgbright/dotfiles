@@ -16,7 +16,7 @@
             }
         },
         {
-            "label": "Windows: Install from Local",
+            "label": "Local Environment: Install from Local File System",
             "detail": "Install dotfiles onto local environment from local filesystem.",
             "type": "shell",
             // "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.cmd",
@@ -29,13 +29,13 @@
             }
         },
         {
-            "label": "Windows: Install from GitHub",
+            "label": "Local Environment: Install from GitHub",
             "detail": "Install dotfiles onto local environment from github.",
             "type": "shell",
             "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-github.cmd"
         },
         {
-            "label": "Windows Sandbox: Install from Local",
+            "label": "Windows Sandbox: Install from Local File System",
             "detail": "Install dotfiles into sandbox vm from local filesystem.",
             "type": "shell",
             "command": "${workspaceFolder}/dotbot-tools/windows/test/test-windows-local.wsb",

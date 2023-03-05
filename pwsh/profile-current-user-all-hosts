@@ -181,17 +181,18 @@ function gstart {
 }
 
 function gyolo {
-    $wip_commit_message = @"
--- wip --
+    [CmdletBinding()]
+    param (
+        [string]$Comment
+    )
 
-[nocicd]
-"@
+    $CommitMessage = if ($Comment) { "wip: $Comment" } else { '-- wip --' }
 
     git add --all
     if (!$?) {
         throw 'error'
     }
-    git commit -m "$wip_commit_message"
+    git commit -m $CommitMessage
     if (!$?) {
         throw 'error'
     }

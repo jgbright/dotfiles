@@ -112,6 +112,8 @@ function Install-1PasswordCli {
 function Main {
     Write-Host "Installing apps..."
 
+    Set-PSDebug -Trace 1
+    
     @(
         @{
             Id       = 'Microsoft.VisualStudioCode'

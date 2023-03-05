@@ -24,5 +24,5 @@
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
-    - [pwsh -File ./dotbot-tools/windows/install/install-apps.ps1, Installing applications]
-    - [pwsh -File ./dotbot-tools/windows/install/configure-apps.ps1, Configuring applications]
+    - [pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -Interactive -File ./dotbot-tools/windows/install/install-apps.ps1, Installing applications]
+    - [pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -Interactive -File ./dotbot-tools/windows/install/configure-apps.ps1, Configuring applications]

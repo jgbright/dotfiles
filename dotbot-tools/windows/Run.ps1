@@ -23,24 +23,31 @@ function Get-PwshCommandWithLog {
         [string]
         $Command,
 
-        [string]$ScripParams,
-
         [Parameter(Mandatory = $true)]
         [string]$LogSlug,
+
+        [string]$ScriptParams,
 
         [datetime]$DateTime = ([DateTime]::Now)
     )
 
     if ($PsCmdlet.ParameterSetName -eq 'File') {
-        $Command = "& '$File'"
+        $Command = "& { & '$File'"
+        if ($ScriptParams) {
+            $Command += " $ScriptParams"
+        }
+        $Command += " }"
     }
     else {
-        $Command = "& {`n$Command`n}"
+        if ($ScriptParams) {
+            $Command = "& { $Command $ScriptParams }"
+        }
+        else {
+            $Command = "& { $Command }"
+
+        }
     }
 
-    if ($ScripParams) {
-        $Command += " $ScripParams"
-    }
 
     $Timestamp = $DateTime.ToString("yyyy-MM-dd_HH-mm-ss-FFF")
     # $Command += " *>> ""$([System.io.path]::GetFullPath("$PSScriptRoot/../logs/$Timestamp.$Slug.log"))"""
@@ -52,11 +59,8 @@ function Get-PwshCommandWithLog {
 function Run {
     [CmdletBinding()]
     param (
-        [Parameter(ParameterSetName = 'Self', Mandatory = $true)]
-        [string]$Self,
-
-        [Parameter(ParameterSetName = 'Self')]
-        [string]$ScripParams,
+        [Parameter(ParameterSetName = 'Restart', Mandatory = $true)]
+        [switch]$Restart,
 
         [Parameter(ParameterSetName = 'Command', Mandatory = $true)]
         [string]$Command,
@@ -64,36 +68,34 @@ function Run {
         [Parameter(ParameterSetName = 'File', Mandatory = $true)]
         [string]$File,
 
+        [string]$ScriptParams,
+
+        [switch]$AsSeperateProcess,
         [switch]$AsAdministrator,
         [switch]$ShowWindow,
         [switch]$Wait,
         [string]$LogSlug,
-        [string]$PwshCommandName = (Get-PwshCommandName)        
+        [string]$PwshCommandName = (Get-PwshCommandName)
+        # [switch]$AsJob
     )
 
     $CommandWithLogging = switch ($PsCmdlet.ParameterSetName) {
-        'Self' {
-            if ($Self) {
-                $CommandWithoutLogging = $Self
-                Get-PwshCommandWithLog -File $Self -LogSlug $LogSlug -ScripParams $ScripParams
+        'Restart' {
+            # If the original command had logging, remove it.
+            $CommandWithoutLogging = (Get-PSCallStack)[-1].Position.Text
+            $LogCommandIndex = $CommandWithoutLogging.IndexOf(' *>&1 | Tee-Object "')
+            if ($LogCommandIndex -gt 0) {
+                $CommandWithoutLogging = $CommandWithoutLogging.Substring(0, $LogCommandIndex)
             }
-            else {
-                # If the original command had logging, remove it.
-                $CommandWithoutLogging = (Get-PSCallStack)[-1].Position.Text
-                $LogCommandIndex = $CommandWithoutLogging.IndexOf(' *>&1 | Tee-Object "')
-                if ($LogCommandIndex -gt 0) {
-                    $CommandWithoutLogging = $CommandWithoutLogging.Substring(0, $LogCommandIndex)
-                }
-                Get-PwshCommandWithLog -Command $CommandWithoutLogging -LogSlug $LogSlug -ScripParams $ScripParams
-            }
+            Get-PwshCommandWithLog -Command $CommandWithoutLogging -LogSlug $LogSlug -ScriptParams $ScriptParams
         }
         'Command' {
             $CommandWithoutLogging = $Command
-            Get-PwshCommandWithLog -Command $Command -LogSlug $LogSlug -ScripParams $ScripParams
+            Get-PwshCommandWithLog -Command $Command -LogSlug $LogSlug -ScriptParams $ScriptParams
         }
         'File' {
             $CommandWithoutLogging = $File
-            Get-PwshCommandWithLog -File $File -LogSlug $LogSlug -ScripParams $ScripParams
+            Get-PwshCommandWithLog -File $File -LogSlug $LogSlug -ScriptParams $ScriptParams
         }
     }
 
@@ -113,16 +115,56 @@ function Run {
     $StartProcessArgs = @{
         FilePath     = $PwshCommandName
         ArgumentList = $ArgumentList
-        Wait         = $Wait
+        Wait         = [boolean]$Wait
+        # AsJob             = [boolean]$AsJob
     }
-
+    
     if ($AsAdministrator) {
         $StartProcessArgs['Verb'] = 'RunAs'
     }
     else {
+        UseNewEnvironment = $true
         $StartProcessArgs['NoNewWindow'] = !$ShowWindow
     }
-
     Write-Host "Start-Process $($StartProcessArgs | ConvertTo-Json -Depth 99)"
-    Start-Process @StartProcessArgs
+
+    if ($AsSeperateProcess) {
+        # Invoke-Command { & Start-Process @StartProcessArgs }
+        Invoke-Command { Invoke-Expression $PS }
+    }
+    else {
+        Start-Process @StartProcessArgs
+    }
+}
+
+function RunPwshSoon {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline, Mandatory)]
+        [string]
+        $Command,
+
+        [timespan]
+        $Delay = (New-TimeSpan -Seconds 5)
+    )
+
+    $Bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
+    $EncodedCommand = [Convert]::ToBase64String($Bytes)
+
+    $PwshExeArgs = @(
+        '-ExecutionPolicy Bypass'
+        '-NoProfile'
+        '-WindowStyle Hidden'
+        "-EncodedCommand $EncodedCommand"
+    ) -join ' '
+
+    Write-Host "Command: $Command"
+    Write-Host "Invocation: pwsh $PwshExeArgs"
+
+    $action = New-ScheduledTaskAction -Execute (Get-PwshCommandName) -Argument $PwshExeArgs
+    $trigger = New-ScheduledTaskTrigger -Once -At ([DateTime]::Now.Add($Delay))
+    # https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtasksettingsset?view=windowsserver2022-ps
+    $settings = New-ScheduledTaskSettingsSet
+    $task = New-ScheduledTask -Action $action -Trigger $trigger -Settings $settings
+    Register-ScheduledTask 'RunPwshSoon' -InputObject $task -Force
 }

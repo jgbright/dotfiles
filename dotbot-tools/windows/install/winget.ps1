@@ -94,9 +94,9 @@ function Install-WingetProgram {
         $Source,
 
         [Parameter(ParameterSetName = "Parameters")]
-        [ValidateSet('user', 'machine')]
+        [ValidateSet('', 'user', 'machine')]
         [string]
-        $Scope = 'user',
+        $Scope = '',
 
         [Parameter(ParameterSetName = "Parameters")]
         [string]
@@ -140,7 +140,7 @@ function Install-WingetProgram {
             $Id = if ($IsString) { $Program } else { $Program.Id }
             $Version = if ((-not $IsString) -and ($Program | Get-Member Version)) { $Program.Version }
             $Source = if ((-not $IsString) -and ($Program | Get-Member Source)) { $Program.Source } else { 'winget' }
-            $Scope = if ((-not $IsString) -and ($Program | Get-Member Scope)) { $Program.Scope } else { 'user' }
+            $Scope = if ((-not $IsString) -and ($Program | Get-Member Scope)) { $Program.Scope }
             $Override = if ((-not $IsString) -and ($Program | Get-Member Override)) { $Program.Override }
 
             Write-Host "Id: $Id"
@@ -163,7 +163,7 @@ function Install-WingetProgram {
                     '--silent'
                 )
 
-                if ($Source){
+                if ($Source) {
                     $WingetArgs += "--source", $Source
                 }
 
@@ -198,7 +198,7 @@ function Install-WingetProgram {
                     '--silent'
                 )
 
-                if ($Scope){
+                if ($Scope) {
                     $WingetArgs += "--scope", $Scope
                 }
                 if ($Override) {

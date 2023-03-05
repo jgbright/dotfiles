@@ -15,12 +15,20 @@ param (
     [switch]$SkipPrerequisites
 )
 
-# Stages: elevated-pwsh-with-prerequisites, dotfiles, software, environment
-
 $ErrorActionPreference = "Stop"
 
+function Resolve-Error ($ErrorRecord = $Error[0]) {
+    $ErrorRecord | Format-List * -Force
+    $ErrorRecord.InvocationInfo | Format-List *
+    $Exception = $ErrorRecord.Exception
+    for ($i = 0; $Exception; $i++, ($Exception = $Exception.InnerException)) {
+        "$i" * 80
+        $Exception | Format-List * -Force
+    }
+}
+
 trap {
-    Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)"
+    Read-Host -Prompt "TRAPPED!  Press enter to exit. ($_)`n$(Resolve-Error $_ | Out-String)"
 }
 
 if ($PSVersionTable.Platform -eq 'Unix') {
@@ -193,53 +201,44 @@ function PrintHeader {
 
     Write-Host "SkipPrerequisites: $SkipPrerequisites"
     Write-Host "Elevated: $Elevated"
-
+    Write-Host "SkipElevationCheck: $SkipElevationCheck"
+    
     Get-PSCallStack | Out-String | Write-Host
+}
+
+function ImportTools {
+
+    if ($PSCommandPath) {
+        Write-Host "Importing tools..."
+        . "$PSScriptRoot/dotbot-tools/windows/Run.ps1"
+        . "$PSScriptRoot/dotbot-tools/windows/install/winget.ps1"
+        Write-Host "Imported tools."
+    }
+    else {
+        Write-Host "Downloading tools..."
+        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Run.ps1') | Invoke-Expression
+        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/install/winget.ps1') | Invoke-Expression
+        Write-Host "Downloaded tools."
+    }
 }
 
 function Main {
     
     PrintHeader
     
-    # if ($IsRepoAvailable) {
-    #     Write-Host "Importing Invoke-Later.ps1..."
-    #     . "$PSScriptRoot/dotbot-tools/windows/Invoke-Later.ps1"
-    #     Write-Host "Imported Invoke-Later.ps1."
-    # }
-    # else {
-    #     Write-Host "Downloading Invoke-Later.ps1..."
-    #         (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Invoke-Later.ps1') | Invoke-Expression
-    #     Write-Host "Downloaded Invoke-Later.ps1."
-    # }
+    ImportTools
 
-    if ($PSCommandPath) {
-        Write-Host "Importing Run.ps1..."
-        . "$PSScriptRoot/dotbot-tools/windows/Run.ps1"
-        . "$PSScriptRoot/dotbot-tools/windows/install/winget.ps1"
-        Write-Host "Imported Run.ps1."
-    }
-    else {
-        Write-Host "Downloading Run.ps1..."
-        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/Run.ps1') | Invoke-Expression
-        (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/jgbright/dotfiles/main/dotbot-tools/windows/install/winget.ps1') | Invoke-Expression
-        Write-Host "Downloaded Run.ps1."
-    }
-
-    $Self = $PSCommandPath
     if (!$SkipElevationCheck -and !(IsAdminUser)) {
         if ($Elevated) {
-            Read-Host -Prrompt "Already tried elevating privileges, but that didn't work."
+            Read-Host -Prompt "ERROR: Failed to run installation process with admin privileges."
         }
         else {
-            Write-Host "Elevating privileges..."
+            Write-Host "Restarting installation process with admin privileges..."
             Run `
+                -Restart `
                 -AsAdministrator `
-                -ScripParams '-Elevated' `
-                -Self $Self `
-                -LogSlug elevated
-                
-            # `
-            # -Wait
+                -ScriptParams '-Elevated' `
+                -LogSlug restarted-with-admin-privileges
         }
         
         return
@@ -322,23 +321,29 @@ function Main {
         # these are programs known to require a new process before you can start
         # using them.
         @(
-            'Microsoft.PowerShell',
-            'Git.Git',
-            'Python.Python.3.11',
-            'Microsoft.DotNet.SDK.6'
-        ) | ForEach-Object {
-            @{
-                Id    = $_
-                Scope = 'machine'
+            @{ 
+                Id = 'Microsoft.PowerShell'
+                # Scope = 'Machine'
+            },
+            @{ 
+                Id    = 'Git.Git'
+                Scope = 'user'
+            },
+            @{ 
+                Id    = 'Python.Python.3.11'
+                Scope = 'user'
+            },
+            @{ 
+                Id = 'Microsoft.DotNet.SDK.6'
             }
-        } | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
+        ) | Install-WingetProgram -InstalledPrograms (Get-WGInstalled)
 
         Write-Host "Finished installing prerequisites."
     }
 
     # Look for a reason to restart the script.  It would be nice to avoid a restart if possible.
     $RequiredCommands = 'git', 'python', 'pwsh', 'dotnet'
-    $MissingCommands = $RequiredCommands | Where-Object { !(Get-Command $_ -ErrorAction SilentlyContinue) }
+    $MissingCommands = $RequiredCommands | Where-Object { -not (Get-Command $_ -ErrorAction SilentlyContinue) }
 
     $PythonVersion = & { 
         $ErrorActionPreference = "SilentlyContinue"
@@ -346,7 +351,7 @@ function Main {
         $ErrorActionPreference = "Stop"
     }
 
-    if (!$PythonVersion) {
+    if (!$PythonVersion -and $MissingCommands -notcontains 'python') {
         $MissingCommands += 'python'
     }
 
@@ -364,13 +369,13 @@ function Main {
         }
         else {
             Write-Host "Restarting script..."
-            Run `
-                -Self $Self `
-                -AsAdministrator `
-                -ScripParams '-SkipPrerequisites' `
-                -LogSlug 'install.ps1-after-installing-core-tools' `
-                -ShowWindow `
-                -Wait
+
+            $Command = Get-PwshCommandWithLog `
+                -File "$BASEDIR\install.ps1" `
+                -ScriptParams '-SkipPrerequisites' `
+                -LogSlug 'install.ps1-after-installing-prerequisites'
+
+            RunPwshSoon $Command
 
             Write-Host "Restarted script."
         }
@@ -397,45 +402,51 @@ function Main {
     git submodule update --init --recursive $DOTBOT_DIR
     Write-Host "Updated submodules."
 
-    $DotbotPluginArgs = Get-ChildItem "$PSScriptRoot/dotbot-plugins" -Directory | ForEach-Object { "--plugin-dir", $_.FullName }
-
     Write-Host "Running dotbot..."
-    foreach ($PYTHON in ('python', 'python3', 'python2')) {
-        $ErrorActionPreference = "SilentlyContinue"
-        $Version = &$PYTHON -V
-        $ErrorActionPreference = "Stop"
 
-        Write-Host "PYTHON: $PYTHON"
-        Write-Host "Version: $Version"
-        
-        # Python redirects to Microsoft Store in Windows 10 when not installed
-        if (& { $ErrorActionPreference = "SilentlyContinue"
-                ![string]::IsNullOrEmpty((&$PYTHON -V))
-                $ErrorActionPreference = "Stop" }) {
-            Write-Host @"
-&$PYTHON `
-$(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
-    -d $BASEDIR `
-    @DotbotPluginArgs `
-    --plugin-dir "$BASEDIR/dotbot-conditional" `
-    --plugin-dir "$BASEDIR/dotbot-crossplatform" `
-    -c $CONFIG $Args
-"@
-            &$PYTHON `
-            $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
-                -d $BASEDIR `
-                @DotbotPluginArgs `
-                --plugin-dir "$BASEDIR/dotbot-conditional" `
-                --plugin-dir "$BASEDIR/dotbot-crossplatform" `
-                -c $CONFIG $Args
+    $Python = 'python', 'python3', 'python2' | 
+    Where-Object { 
+        $Version = & $_ -V
+        $Result = $? -and $Version
+        Write-Host "Valid: $Result Python: $_ Version: $Version"
+        return $Result
+    } | 
+    Select-Object -First 1
 
-            
-            Write-Host "🎉 Enjoy!"
-            return
-        }
+    Write-Host "PYTHON: $Python"
+
+    if (!$Python) {
+        Write-Error "Error: Cannot find Python."
+        exit 1
     }
+        
+    # $DotBotCli = Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN
+    # $DotbotPluginArgs = Get-ChildItem "$BASEDIR\dotbot-plugins" -Directory | ForEach-Object { " ``n    --plugin-dir '$_'" }
+    #             $Command = @"
+    # & '$Python' $DotBotCli `
+    #     -d $BASEDIR$DotbotPluginArgs `
+    #     -c $CONFIG $Args
+    # "@
 
-    Write-Error "Error: Cannot find Python."
+
+
+    # $DotBotCli = Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN
+    # $PwshCommandToLaunchDotBot = "& '$Python' '$DotBotCli'"
+    # foreach ($PluginDir in (Get-ChildItem "$BASEDIR\dotbot-plugins" -Directory)) {
+    #     $PwshCommandToLaunchDotBot += " `n    --plugin-dir '$PluginDir'"
+    # }
+    # $PwshCommandToLaunchDotBot += " `n    -c '$CONFIG' $Args"
+
+    # Invoke-Command {
+
+    # }
+
+    $DotbotPluginArgs = Get-ChildItem "$BASEDIR\dotbot-plugins" -Directory | ForEach-Object { '--plugin-dir', $_.FullName }
+
+    Write-Host "& $Python $DotBotCli -d $BASEDIR -c $CONFIG $DotbotPluginArgs $Args"
+    & $Python $DotBotCli -d $BASEDIR -c $CONFIG $DotbotPluginArgs $Args
+
+    Write-Host "🎉 Enjoy!"
 }
 
 # These need to be top-level in this file, because the context will change.
