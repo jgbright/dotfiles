@@ -1,9 +1,6 @@
 [user]
-# Don't set your email here.  Set it in .gitconfig-local
-# 	email = jason.bright_ext@loftorbital.com
+ 	email = jgbright@gmail.com
 	name = Jason Bright
-[include]
-	path = .gitconfig-local
 [pull]
 	rebase = true
 [core]
@@ -16,3 +13,5 @@
 	defaultBranch = main
 [sequence]
 	editor = rebase-editor
+[include]
+	path = .gitconfig-local
