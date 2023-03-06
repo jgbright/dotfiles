@@ -1,9 +1,11 @@
 # alias gyolo='git add --all && git commit -m "-- wip --  [nocicd]" && git push'
 
 gyolo() {
-    wip_commit_message="-- wip --
-
-[nocicd]"
+    if [ -z "$1" ]; then
+        wip_commit_message="-- wip --"
+    else
+        wip_commit_message="-- wip: $* --"
+    fi
 
     git add --all &&
         git commit -m "$wip_commit_message" &&
@@ -13,7 +15,7 @@ gyolo() {
 gstart() {
     initial_commit_message="chore: empty initial commit"
 
-    git init && 
+    git init &&
         git commit --allow-empty --message "$initial_commit_message"
 }
 

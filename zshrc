@@ -128,7 +128,7 @@ source ~/.shell/aliases.sh
 
 # Oh my posh
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-    eval "$(oh-my-posh init zsh --config "$HOME/.poshthemes/kushal.omp.json")"
+    eval "$(oh-my-posh init zsh --config "$HOME/.oh-my-posh.omp.json")"
 fi
 
 eval "$(zoxide init zsh)"

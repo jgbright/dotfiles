@@ -173,7 +173,7 @@ fi
 # fzf
 
 # Oh my posh
-eval "$(oh-my-posh init bash --config "$HOME/.poshthemes/kushal.omp.json")"
+eval "$(oh-my-posh init bash --config "$HOME/.oh-my-posh.omp.json")"
 
 eval "$(zoxide init bash)"
 

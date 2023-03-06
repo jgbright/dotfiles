@@ -42,6 +42,7 @@ cleanup() {
 }
 
 apt_install() {
+
     package="${1}"
     command="${2:-$1}"
     if command -v "$command" &>/dev/null; then
@@ -59,11 +60,11 @@ install_ohmyzsh() {
         log "Oh My Zsh already installed."
         return
     fi
-    log "Installing Oh My Zsh..."
+        log "Installing Oh My Zsh..."
 
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-    log "Installed Oh My Zsh."
+        log "Installed Oh My Zsh."
 }
 
 install_ohmyposh() {
@@ -91,11 +92,11 @@ install_az() {
         log "Azure CLI already installed."
         return
     fi
-    log "Installing Azure CLI..."
+        log "Installing Azure CLI..."
 
-    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-    log "Installed Azure CLI."
+        log "Installed Azure CLI."
 }
 
 install_pwsh() {
@@ -103,17 +104,17 @@ install_pwsh() {
         log "Powershell already installed."
         return
     fi
-    log "Installing pwsh..."
+        log "Installing pwsh..."
 
-    # https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.3
-    apt_get_update
-    sudo apt-get install -y wget apt-transport-https software-properties-common
-    wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
-    sudo dpkg -i packages-microsoft-prod.deb
-    sudo apt-get update
-    sudo apt-get install -y powershell
+        # https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.3
+        apt_get_update
+        sudo apt-get install -y wget apt-transport-https software-properties-common
+        wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
+        sudo dpkg -i packages-microsoft-prod.deb
+        sudo apt-get update
+        sudo apt-get install -y powershell
 
-    log "Installed pwsh."
+        log "Installed pwsh."
 }
 
 install_lazygit() {
@@ -121,17 +122,17 @@ install_lazygit() {
         log "Lazygit already installed."
         return
     fi
-    log "Installing lazygit..."
+        log "Installing lazygit..."
 
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-    pushd /tmp
-    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-    tar xf lazygit.tar.gz lazygit
-    sudo install lazygit /usr/local/bin
-    rm -f lazygit,lazygit.tar.gz
-    popd
+        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+        pushd /tmp
+        curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+        tar xf lazygit.tar.gz lazygit
+        sudo install lazygit /usr/local/bin
+        rm -f lazygit,lazygit.tar.gz
+        popd
 
-    log "Installed lazygit."
+        log "Installed lazygit."
 }
 
 install_lazydocker() {
@@ -139,11 +140,11 @@ install_lazydocker() {
         log "Lazydocker already installed."
         return
     fi
-    log "Installing lazydocker..."
+        log "Installing lazydocker..."
 
-    curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | DIR=/usr/bin bash
+        curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | DIR=/usr/bin bash
 
-    log "Installed lazydocker."
+        log "Installed lazydocker."
 }
 
 install_dive() {
@@ -151,15 +152,15 @@ install_dive() {
         log "Dive already installed."
         return
     fi
-    log "Installing dive..."
+        log "Installing dive..."
 
-    pushd /tmp
-    wget https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
-    sudo apt install ./dive_0.9.2_linux_amd64.deb
-    rm ./dive_0.9.2_linux_amd64.deb
-    popd
+        pushd /tmp
+        wget https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
+        sudo apt install ./dive_0.9.2_linux_amd64.deb
+        rm ./dive_0.9.2_linux_amd64.deb
+        popd
 
-    log "Installed dive."
+        log "Installed dive."
 }
 
 install_k9s() {
@@ -167,11 +168,11 @@ install_k9s() {
         log "K9s already installed."
         return
     fi
-    log "Installing k9s..."
+        log "Installing k9s..."
 
-    curl -sS https://webinstall.dev/k9s | bash
+        curl -sS https://webinstall.dev/k9s | bash
 
-    log "Installed k9s."
+        log "Installed k9s."
 }
 
 install_zsh_plugin() {
@@ -263,24 +264,25 @@ install_rustup() {
     fi
 }
 
-# install_exa() {
-#     install_rust
+install_exa() {
+    install_rust
 
-#     log "Installing exa..."
+    log "Installing exa..."
 
-#     temp_dir=$(mktemp -d)
-#     mkdir -p "$temp_dir"
-#     echo "Temp dir: $temp_dir"
-#     git clone https://github.com/ogham/exa.git "$temp_dir"
-#     pushd "$temp_dir"
-#     cargo build --release
-#     sudo cp "$temp_dir/target/release/exa" /usr/bin/exa
-#     popd
+    temp_dir=$(mktemp -d)
+    mkdir -p "$temp_dir"
+    echo "Temp dir: $temp_dir"
+    git clone https://github.com/ogham/exa.git "$temp_dir"
+    cd "$temp_dir"
+    cargo build --release
+    sudo cp "$temp_dir/target/release/exa" /usr/bin/exa
 
-#     rm -rf "$temp_dir"
+    rm -rf "$temp_dir"
 
-#     log "Installed exa."
-# }
+    log "Installed exa."
+}
+
+
 
 main() {
     log "Installing apps..."
@@ -303,8 +305,9 @@ main() {
     install_k9s
     install_1password_cli
     install_rustup
+    install_exa
     install_bat
-    install_fzf
+    # install_fzf
 
     install_zsh_plugin https://github.com/zsh-users/zsh-autosuggestions
     install_zsh_plugin https://github.com/zsh-users/zsh-syntax-highlighting
