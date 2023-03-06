@@ -15,3 +15,6 @@
 	editor = rebase-editor
 [include]
 	path = .gitconfig-local
+[safe]
+	directory = /workspaces/*
+	directory = /workspaces/earthobservationpayloadapp
