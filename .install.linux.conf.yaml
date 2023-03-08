@@ -18,9 +18,8 @@
     ~/.gitconfig: gitconfig-linux
     ~/.profile:
     ~/.shell:
-    ~/.oh-my-posh.omp.json:
+    ~/.oh-my-posh.omp.json: oh-my-posh.omp.json
     ~/.local/bin/: 
-        create: true
         glob: true
         path: bin/linux/*
     ~/.local/bin/update-dotfiles: install.sh
