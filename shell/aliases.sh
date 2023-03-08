@@ -1,7 +1,7 @@
 # alias gyolo='git add --all && git commit -m "-- wip --  [nocicd]" && git push'
 
 gyolo() {
-    if [ -z "$1" ]; then
+    if [ -z "$*" ]; then
         wip_commit_message="-- wip --"
     else
         wip_commit_message="-- wip: $* --"
