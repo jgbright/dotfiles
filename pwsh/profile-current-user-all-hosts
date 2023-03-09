@@ -1,0 +1,73 @@
+# oh-my-posh
+oh-my-posh init pwsh --config (Join-Path $home '.oh-my-posh.omp.json') | Invoke-Expression
+
+# PowerShell parameter completion shim for the dotnet CLI
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+    param($commandName, $wordToComplete, $cursorPosition)
+        dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
+           [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+}
+
+
+function dfu {
+    Push-Location "$home/.dotfiles"
+    git pull --ff-only
+    if (!$?) {
+        throw 'error'
+    }
+    Write-Host "Running install"
+    if ($IsLinux) {
+        & ./install.sh
+    } else {
+        & ./install.ps1
+    }
+    Pop-Location
+}
+
+function gstart {
+    # do actual thinggstart() {
+    $initial_commit_message = "chore: empty initial commit"
+
+    git init
+    if (!$?) {
+        throw 'error'
+    }
+    git commit --allow-empty --message "$initial_commit_message"
+    if (!$?) {
+        throw 'error'
+    }
+}
+
+function gyolo {
+    [CmdletBinding()]
+    param (
+        [string]$Comment
+    )
+
+    $CommitMessage = if ($Comment) { "wip: $Comment" } else { '-- wip --' }
+
+    git add --all
+    if (!$?) {
+        throw 'error'
+    }
+    git commit -m $CommitMessage
+    if (!$?) {
+        throw 'error'
+    }
+    git push
+    if (!$?) {
+        throw 'error'
+    }
+}
+    
+if (Test-Path "$home\.shell_local_after.ps1") {
+    . "$home\.shell_local_after.ps1"
+}
+
+$ConfigureGitScript = "$home/.dotfiles/bin-xplat/configure-git.ps1"
+if (Test-Path $ConfigureGitScript) {
+    . $ConfigureGitScript
+} else {
+    Write-Warning "Could not find configure-git.ps1 script at $ConfigureGitScript"
+}

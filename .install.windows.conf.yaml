@@ -1,0 +1,27 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.gitconfig-windows: gitconfig-windows
+    ~/.gitconfig-xplat: gitconfig-xplat
+    ~/.local/bin-xplat/: 
+        glob: true
+        path: bin-xplat/*
+    ~/.local/bin/: 
+        glob: true
+        path: bin-windows/*
+    ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - [pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -Interactive -File ./dotbot-tools/windows/install/install-apps.ps1, Installing applications]
+    - [pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -Interactive -File ./dotbot-tools/windows/install/configure-apps.ps1, Configuring applications]

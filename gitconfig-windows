@@ -1,0 +1,17 @@
+[include]
+	path = .gitconfig-xplat
+[core]
+	eol = lf
+	autocrlf = false
+[diff]
+	tool = bc
+[difftool "bc"]
+	path = c:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+[merge]
+	tool = bc
+[mergetool "bc"]
+	path = c:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+[difftool]
+	prompt = false
+[mergetool]
+	keepBackup = false

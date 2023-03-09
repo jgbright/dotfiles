@@ -21,7 +21,7 @@ ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
@@ -70,7 +70,20 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+    common-aliases
+    git
+    gitfast
+    fzf-zsh-plugin
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    history-substring-search
+    # zsh-exa
+)
+
+# We are currently using zoxide for the `z` command. z, but fasd is another good option
+    # fasd
+    # zsh-z
 
 source $ZSH/oh-my-zsh.sh
 
@@ -100,6 +113,40 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# TODO: Copy this format https://github.com/anishathalye/dotfiles/blob/master/zshrc
+
+# Functions
+source ~/.shell/functions.sh
+
+# Bootstrap
+source ~/.shell/bootstrap.sh
+
+# External settings
+source ~/.shell/external.sh
+
+# Aliases
+source ~/.shell/aliases.sh
+
+# Plugins
+source ~/.zsh/extra.zsh
+
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
+# Fuzzy finder
+
+# Oh my posh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+    eval "$(oh-my-posh init zsh --config "$HOME/.oh-my-posh.omp.json")"
+fi
+
+eval "$(zoxide init zsh)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Allow local customizations in the ~/.shell_local_after file
+if [ -f ~/.shell_local_after ]; then
+    source ~/.shell_local_after
+fi

@@ -1,3 +1,33 @@
+# alias gyolo='git add --all && git commit -m "-- wip --  [nocicd]" && git push'
+
+gyolo() {
+    if [ -z "$*" ]; then
+        wip_commit_message="-- wip --"
+    else
+        wip_commit_message="-- wip: $* --"
+    fi
+
+    git add --all &&
+        git commit -m "$wip_commit_message" &&
+        git push
+}
+
+gstart() {
+    initial_commit_message="chore: empty initial commit"
+
+    git init &&
+        git commit --allow-empty --message "$initial_commit_message"
+}
+
+alias ll='exa -lbF --git'
+alias la='exa -lbhHigmuSa --time-style=long-iso --git --color-scale'
+alias lx='exa -lbhHigmuSa@ --time-style=long-iso --git --color-scale'
+alias llt='exa -l --git --tree'
+alias lt='exa --tree --level=2'
+## Sorts
+alias llm='exa -lbGF --git --sort=modified'
+alias lld='exa -lbhHFGmuSa --group-directories-first'
+
 # # Use colors in coreutils utilities output
 # alias ls='ls --color=auto'
 # alias grep='grep --color'
@@ -14,12 +44,12 @@
 # # git related aliases
 # alias gag='git exec ag'
 
-# # Update dotfiles
-# dfu() {
-#     (
-#         cd ~/.dotfiles && git pull --ff-only && ./install -q
-#     )
-# }
+# Update dotfiles
+dfu() {
+    (
+        cd ~/.dotfiles && git pull --ff-only && bash ./install.sh -q
+    )
+}
 
 # # Use pip without requiring virtualenv
 # syspip() {

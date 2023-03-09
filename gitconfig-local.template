@@ -1,0 +1,13 @@
+# This file is not managed like the other dotfiles.  Changes made here won't
+# persist.  If you want to persist some of this content, move it
+# into ~/.dotfiles/gitconfig-xplat (or -linux, or -windows).
+
+[includeIf "gitdir:C:"]
+    path = .gitconfig-windows
+
+[includeIf "gitdir:/"]
+    path = .gitconfig-linux
+
+[user]
+	email = jgbright@gmail.com
+	name = Jason Bright

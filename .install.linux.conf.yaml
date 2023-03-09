@@ -1,0 +1,34 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+    shell:
+      stdin: true
+      stdout: true
+      stderr: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.bash:
+    ~/.bash_logout:
+    ~/.bashrc:
+    ~/.gitconfig-linux:
+    ~/.gitconfig-xplat:
+    ~/.local/bin/update-dotfiles: install.sh
+    ~/.local/bin-xplat/:
+        glob: true
+        path: bin-xplat/*
+    ~/.local/bin/:
+        glob: true
+        path: bin-linux/*
+    ~/.oh-my-posh.omp.json: oh-my-posh.omp.json
+    ~/.profile:
+    ~/.shell:
+    ~/.zsh:
+    ~/.zshrc:
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - [bash ./dotbot-tools/linux/install/install-after-running-dotbot.sh, Installing software]
