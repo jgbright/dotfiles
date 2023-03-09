@@ -15,15 +15,21 @@
     ~/.bash:
     ~/.bash_logout:
     ~/.bashrc:
-    ~/.gitconfig: gitconfig-linux
     ~/.profile:
     ~/.shell:
     ~/.oh-my-posh.omp.json: oh-my-posh.omp.json
+    ~/.local/bin/update-dotfiles: install.sh
     ~/.local/bin/: 
         glob: true
-        path: bin/linux/*
-    ~/.local/bin/update-dotfiles: install.sh
+        path: bin-xplat/*
+    ~/.local/bin-linux/: 
+        glob: true
+        path: bin-linux/*
+    ~/.gitconfig-xplat: gitconfig-xplat
+    ~/.gitconfig-linux: gitconfig-linux
+    ~/.config/powershell/profile.ps1: pwsh/profile-current-user-all-hosts
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
     - [bash ./dotbot-tools/linux/install/install-after-running-dotbot.sh, Installing software]
+

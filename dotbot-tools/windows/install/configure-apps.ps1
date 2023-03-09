@@ -17,18 +17,29 @@ function Upgrade-All {
         --accept-package-agreements
 }
 
+function AddToPath {
+    param (
+        [string]$Path
+    )
+    # We can do this xplat.
+}
+
 function  Configure-Path {
     # Add ~/.local/bin to path if it's not already there.
-    $Paths = $env:PATH.Split(';')
+    $Paths = $env:PATH -split [System.IO.Path]::PathSeparator | Sort-Object -Unique
 
-    $Paths = $Paths | Sort-Object -Unique
-
-    $BinDir = "$env:USERPROFILE\.local\bin"
+    $BinDir = "$home\.local\bin-windows"
     if ($Paths -notcontains $BinDir) {
         # Add to beginning of path.
         $Paths = @($BinDir) + $Paths
     }
-    
+
+    $BinDir = "$home\.local\bin"
+    if ($Paths -notcontains $BinDir) {
+        # Add to beginning of path.
+        $Paths = @($BinDir) + $Paths
+    }
+
     $Path = $Paths -join ';'
 
     if ($env:PATH -ne $Path) {
@@ -41,17 +52,6 @@ function Configure-PwshExecutionPolicy {
     
     
     Write-Host "Configured pwsh."
-}
-
-function Configure-Git {
-    if (Test-Path "$home\.gitconfig-local") {
-        Write-Host "Git local config file already exists."
-        return
-    }
-    
-    Write-Host 'Copying ~/.gitconfig-local...'
-    Copy-Item "$PSScriptRoot\..\..\..\.gitconfig-local.template" "$home\.gitconfig-local"
-    Write-Host 'Copied ~/.gitconfig-local.'
 }
 
 function Configure-DotNetNugetSources {
@@ -286,7 +286,6 @@ function Main {
 
     Configure-Path
     Configure-PwshExecutionPolicy
-    Configure-Git
     Configure-DotNetNugetSources
     Install-DotnetSuggest
     Configure-DotnetSuggest

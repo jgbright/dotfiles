@@ -60,11 +60,11 @@ install_ohmyzsh() {
         log "Oh My Zsh already installed."
         return
     fi
-        log "Installing Oh My Zsh..."
+    log "Installing Oh My Zsh..."
 
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-        log "Installed Oh My Zsh."
+    log "Installed Oh My Zsh."
 }
 
 install_ohmyposh() {
@@ -77,12 +77,6 @@ install_ohmyposh() {
     sudo wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O /usr/local/bin/oh-my-posh
     sudo chmod +x /usr/local/bin/oh-my-posh
 
-    mkdir ~/.poshthemes
-    wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip -O ~/.poshthemes/themes.zip
-    unzip ~/.poshthemes/themes.zip -d ~/.poshthemes
-    chmod u+rw ~/.poshthemes/*.omp.*
-    rm -f ~/.poshthemes/themes.zip
-
     log "Installed Oh My Posh."
 
 }
@@ -92,11 +86,11 @@ install_az() {
         log "Azure CLI already installed."
         return
     fi
-        log "Installing Azure CLI..."
+    log "Installing Azure CLI..."
 
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-        log "Installed Azure CLI."
+    log "Installed Azure CLI."
 }
 
 install_pwsh() {
@@ -104,17 +98,17 @@ install_pwsh() {
         log "Powershell already installed."
         return
     fi
-        log "Installing pwsh..."
+    log "Installing pwsh..."
 
-        # https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.3
-        apt_get_update
-        sudo apt-get install -y wget apt-transport-https software-properties-common
-        wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
-        sudo dpkg -i packages-microsoft-prod.deb
-        sudo apt-get update
-        sudo apt-get install -y powershell
+    # https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.3
+    apt_get_update
+    sudo apt-get install -y wget apt-transport-https software-properties-common
+    wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
+    sudo dpkg -i packages-microsoft-prod.deb
+    sudo apt-get update
+    sudo apt-get install -y powershell
 
-        log "Installed pwsh."
+    log "Installed pwsh."
 }
 
 install_lazygit() {
@@ -122,17 +116,17 @@ install_lazygit() {
         log "Lazygit already installed."
         return
     fi
-        log "Installing lazygit..."
+    log "Installing lazygit..."
 
-        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-        pushd /tmp
-        curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-        tar xf lazygit.tar.gz lazygit
-        sudo install lazygit /usr/local/bin
-        rm -f lazygit,lazygit.tar.gz
-        popd
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    pushd /tmp
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit /usr/local/bin
+    rm -f lazygit,lazygit.tar.gz
+    popd
 
-        log "Installed lazygit."
+    log "Installed lazygit."
 }
 
 install_lazydocker() {
@@ -140,11 +134,11 @@ install_lazydocker() {
         log "Lazydocker already installed."
         return
     fi
-        log "Installing lazydocker..."
+    log "Installing lazydocker..."
 
-        curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | DIR=/usr/bin bash
+    curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | DIR=/usr/bin bash
 
-        log "Installed lazydocker."
+    log "Installed lazydocker."
 }
 
 install_dive() {
@@ -152,15 +146,15 @@ install_dive() {
         log "Dive already installed."
         return
     fi
-        log "Installing dive..."
+    log "Installing dive..."
 
-        pushd /tmp
-        wget https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
-        sudo apt install ./dive_0.9.2_linux_amd64.deb
-        rm ./dive_0.9.2_linux_amd64.deb
-        popd
+    pushd /tmp
+    wget https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
+    sudo apt install ./dive_0.9.2_linux_amd64.deb
+    rm ./dive_0.9.2_linux_amd64.deb
+    popd
 
-        log "Installed dive."
+    log "Installed dive."
 }
 
 install_k9s() {
@@ -168,11 +162,11 @@ install_k9s() {
         log "K9s already installed."
         return
     fi
-        log "Installing k9s..."
+    log "Installing k9s..."
 
-        curl -sS https://webinstall.dev/k9s | bash
+    curl -sS https://webinstall.dev/k9s | bash
 
-        log "Installed k9s."
+    log "Installed k9s."
 }
 
 install_zsh_plugin() {
@@ -223,7 +217,7 @@ install_bat() {
     if command -v bat &>/dev/null; then
         log "Bat already installed."
     else
-        package=$(mktemp bat-musl_0.22.1_amd64XXX.deb)
+        package=$(mktemp --tmpdir bat-musl_0.22.1_amd64XXX.deb)
         curl -Lo "$package" "https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb"
         sudo dpkg -i "$package"
         rm -rf "$package"
@@ -236,7 +230,7 @@ install_fzf() {
     else
         log "Installing fzf..."
 
-        package=$(mktemp -d)
+        package=$(mktemp -d --tmpdir)
         git clone --depth 1 https://github.com/junegunn/fzf "$package"
 
         # install docs: https://github.com/junegunn/fzf/blob/master/install#L16-L29
@@ -255,21 +249,25 @@ install_fzf() {
 install_rustup() {
     if command -v rustup &>/dev/null; then
         log "Rust already installed."
-    else
-        log "Installing Rust..."
-
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-        log "Installed Rust."
+        return
     fi
+
+    log "Installing Rust..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    log "Installed Rust."
 }
 
 install_exa() {
-    install_rust
+    if command -v exa >/dev/null; then
+        log "Exa already installed."
+        return
+    fi
+
+    install_rustup
 
     log "Installing exa..."
 
-    temp_dir=$(mktemp -d)
+    temp_dir=$(mktemp -d --tmpdir)
     mkdir -p "$temp_dir"
     echo "Temp dir: $temp_dir"
     git clone https://github.com/ogham/exa.git "$temp_dir"
@@ -281,8 +279,6 @@ install_exa() {
 
     log "Installed exa."
 }
-
-
 
 main() {
     log "Installing apps..."

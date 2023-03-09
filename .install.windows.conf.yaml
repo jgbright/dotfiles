@@ -11,16 +11,15 @@
 - clean: ['~', '~/.config']
 
 - link:
-    ~/.local/bin: bin/windows
-    ~/.gitconfig: gitconfig-windows
+    ~/.local/bin/: 
+        glob: true
+        path: bin-xplat/*
+    ~/.local/bin-windows/: 
+        glob: true
+        path: bin-windows/*
+    ~/.gitconfig-xplat: gitconfig-xplat
+    ~/.gitconfig-windows: gitconfig-windows
     ~/Documents/PowerShell/profile.ps1: pwsh/profile-current-user-all-hosts
-    # ~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
-#     ~/.bash:
-#     ~/.bash_logout:
-#     ~/.bashrc:
-#     ~/.profile:
-#     ~/.shell:
-#     ~/.local/bin: bin
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]

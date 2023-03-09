@@ -115,6 +115,12 @@ source $ZSH/oh-my-zsh.sh
 
 # TODO: Copy this format https://github.com/anishathalye/dotfiles/blob/master/zshrc
 
+# Functions
+source ~/.shell/functions.sh
+
+# Bootstrap
+source ~/.shell/bootstrap.sh
+
 # External settings
 source ~/.shell/external.sh
 
@@ -141,4 +147,3 @@ export NVM_DIR="$HOME/.nvm"
 if [ -f ~/.shell_local_after ]; then
     source ~/.shell_local_after
 fi
-

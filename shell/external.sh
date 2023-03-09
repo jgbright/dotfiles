@@ -14,5 +14,15 @@
 # export DOCKER_SCAN_SUGGEST=false
 
 export DOTFILES_DIR="$HOME/.dotfiles"
+export REAL_DOTFILES_DIR="$(dirname "$(realpath "$0")")"
+export REAL_DOTFILES_DIR2="$( cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P )"
+
+# get script path
+# https://stackoverflow.com/a/246128/1123955
+# https://stackoverflow.com/a/4774063/1123955
+# https://stackoverflow.com/a/4774063/1123955
+
+
+
 
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"

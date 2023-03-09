@@ -15,4 +15,4 @@ if [ -n "$TRACE" ]; then
 fi
 
 find "$DOTFILES_DIR" -type f ! -path './.git/*' -path '*.sh' -exec bash -c$bash_args 'chmod +x "{}"' \;
-find "$DOTFILES_DIR/bin/linux" -type f -exec bash -c$bash_args 'chmod +x "{}"' \;
+find "$DOTFILES_DIR/bin-linux" -type f -exec bash -c$bash_args 'chmod +x "{}"' \;

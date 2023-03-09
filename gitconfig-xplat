@@ -1,0 +1,20 @@
+[user]
+	email = jgbright@gmail.com
+	name = Jason Bright
+
+[include]
+	path = .gitconfig-local
+
+[pull]
+	rebase = true
+[core]
+	editor = code --wait
+[push]
+	autoSetupRemote = true
+[sequence]
+	editor = rebase-editor
+[init]
+	defaultBranch = main
+
+[alias]
+	start = !git init && git commit --allow-empty -m \"initial commit\" && :

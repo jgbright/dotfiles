@@ -1,18 +1,9 @@
-[user]
-	email = jgbright@gmail.com
-	name = Jason Bright
-[pull]
-	rebase = true
+[include]
+	path = .gitconfig-xplat
+
 [core]
-	editor = code --wait
 	eol = lf
 	autocrlf = false
-[push]
-	autoSetupRemote = true
-[sequence]
-	editor = rebase-editor
-[init]
-	defaultBranch = main
 [diff]
 	tool = bc
 [difftool "bc"]
@@ -25,7 +16,3 @@
 	prompt = false
 [mergetool]
 	keepBackup = false
-[alias]
-	start = !git init && git commit --allow-empty -m \"chore: empty initial commit\n\n[nocicd]\" && :
-[include]
-	path = .gitconfig-local
