@@ -36,7 +36,6 @@ apt_remove_lists() {
 }
 
 apt_install() {
-
     package="${1}"
     command="${2:-$1}"
     if command -v "$command" &>/dev/null; then

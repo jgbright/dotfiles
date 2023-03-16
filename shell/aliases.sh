@@ -16,6 +16,7 @@ gstart() {
     initial_commit_message="chore: empty initial commit"
 
     git init &&
+        git checkout -b main &&
         git commit --allow-empty --message "$initial_commit_message"
 }
 
