@@ -56,6 +56,17 @@ apt_install() {
     log "Installed $package."
 }
 
+install_zoxide() {
+    if command -v zoxide &>/dev/null; then
+        log "Zoxide is already installed."
+        return
+    fi
+
+    log "Installing zoxide..."
+    curl -sS https://webi.sh/zoxide | sh 
+    log "Installed zoxide."
+}
+
 install_ohmyzsh() {
     if [ -d "${HOME}/.oh-my-zsh" ]; then
         log "Oh My Zsh already installed."
@@ -68,8 +79,8 @@ install_ohmyzsh() {
 }
 
 install_ohmyposh() {
-    if [ -d "${HOME}/.oh-my-zsh" ]; then
-        log "Oh My Zsh already installed."
+    if command -v oh-my-posh &>/dev/null; then
+        log "Oh My Posh already installed."
         return
     fi
 
@@ -320,10 +331,11 @@ main() {
     apt_install zsh
     apt_install xdg-utils xdg-open
     apt_install mc
-    apt_install zoxide
+    # apt_install zoxide
 
     # curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 
+    install_zoxide
     install_ohmyzsh
     install_ohmyposh
     install_pwsh
